@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Crowdly_BE.Authentication;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Crowdly_BE.Authentication
+namespace Crowdly_BE
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

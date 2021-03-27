@@ -1,5 +1,5 @@
 ﻿using Crowdly_BE.Authentication;
-using Microsoft.AspNetCore.Http;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
