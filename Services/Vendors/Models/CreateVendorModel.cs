@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Services.Vendors.Models
 {
-    public class AddVendorModel
+    public class CreateVendorModel
     {
         public string Name { get; set; }
         public string City { get; set; }

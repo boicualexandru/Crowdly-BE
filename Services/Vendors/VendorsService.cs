@@ -13,13 +13,21 @@ namespace Services.Vendors
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public async Task CreateAsync(AddVendorModel vendor)
+        public VendorsService(ApplicationDbContext dbContext, IMapper mapper)
+        {
+            _dbContext = dbContext;
+            _mapper = mapper;
+        }
+
+        public async Task<Vendor> CreateAsync(CreateVendorModel vendor)
         {
             var dbVendor = _mapper.Map<DataAccess.Models.Vendor>(vendor);
             dbVendor.Id = Guid.NewGuid().ToString();
 
             _dbContext.Vendors.Add(dbVendor);
             await _dbContext.SaveChangesAsync();
+
+            return _mapper.Map<Vendor>(dbVendor);
         }
 
         public async Task<Vendor[]> GetAllAsync()

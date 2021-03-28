@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Services.Vendors;
+using System.Reflection;
 using System.Text;
 
 namespace Crowdly_BE
@@ -30,6 +32,8 @@ namespace Crowdly_BE
             //    .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
 
             services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(VendorsService));
+
             services.AddControllers();
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("ConnStr")));
@@ -82,6 +86,9 @@ namespace Crowdly_BE
                     new string[] {}}}
                 );
             });
+
+            // Services DI
+            services.AddTransient<IVendorsService, VendorsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

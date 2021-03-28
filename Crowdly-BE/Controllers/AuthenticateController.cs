@@ -15,7 +15,7 @@ namespace Crowdly_BE.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AuthenticateController : Controller
+    public class AuthenticateController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IConfiguration _configuration;

@@ -7,7 +7,7 @@ namespace Services.Vendors
     {
         Task<Vendor[]> GetAllAsync();
 
-        Task CreateAsync(AddVendorModel vendor);
+        Task<Vendor> CreateAsync(CreateVendorModel vendor);
 
         Task UpdateAsync(Vendor vendor);
     }
