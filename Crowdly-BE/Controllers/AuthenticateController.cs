@@ -1,14 +1,8 @@
-﻿using Crowdly_BE.Authentication;
-using DataAccess.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Crowdly_BE.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using Services.Authentication;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Crowdly_BE.Controllers
@@ -17,71 +11,35 @@ namespace Crowdly_BE.Controllers
     [Route("[controller]")]
     public class AuthenticateController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly IConfiguration _configuration;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IMapper _mapper;
 
-        public AuthenticateController(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public AuthenticateController(IAuthenticationService authenticationService, IMapper mapper)
         {
-            this.userManager = userManager;
-            _configuration = configuration;
+            _authenticationService = authenticationService;
+            _mapper = mapper;
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginModel model)
         {
-            var user = await userManager.FindByNameAsync(model.Username);
-            if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
-            {
-                var userRoles = await userManager.GetRolesAsync(user);
+            var loginResponse = await _authenticationService.LoginAsync(_mapper.Map<Services.Authentication.Models.LoginModel>(model));
 
-                var authClaims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                };
+            if (loginResponse.ErrorMessages.Any())
+                return BadRequest(loginResponse.ErrorMessages);
 
-                foreach (var userRole in userRoles)
-                {
-                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-                }
-
-                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-
-                var token = new JwtSecurityToken(
-                    issuer: _configuration["JWT:ValidIssuer"],
-                    audience: _configuration["JWT:ValidAudience"],
-                    expires: DateTime.Now.AddHours(3),
-                    claims: authClaims,
-                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                    );
-
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
-                });
-            }
-            return Unauthorized();
+            return _mapper.Map<LoginResponse>(loginResponse);
         }
 
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
-            var userExists = await userManager.FindByNameAsync(model.Username);
-            if (userExists != null)
-                return BadRequest("User already exists!");
+            var errorMessages = await _authenticationService.RegisterAsync(_mapper.Map<Services.Authentication.Models.RegisterModel>(model));
 
-            ApplicationUser user = new ApplicationUser()
-            {
-                Email = model.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.Username
-            };
-            var result = await userManager.CreateAsync(user, model.Password);
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
+            if (errorMessages.Any())
+                return BadRequest(errorMessages);
 
             return Ok();
         }

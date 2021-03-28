@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Services.Authentication;
 using Services.Vendors;
 using System.Reflection;
 using System.Text;
@@ -88,6 +89,7 @@ namespace Crowdly_BE
             });
 
             // Services DI
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IVendorsService, VendorsService>();
         }
 
