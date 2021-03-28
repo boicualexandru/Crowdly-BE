@@ -32,7 +32,7 @@ namespace Services.Vendors
 
         public async Task<Vendor[]> GetAllAsync()
         {
-            var dbVendors = await _dbContext.Vendors.AsNoTracking().ToArrayAsync();
+            var dbVendors = await _dbContext.Vendors.ToArrayAsync();
             return _mapper.Map<Vendor[]>(dbVendors);
         }
 
