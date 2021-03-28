@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowdly-BE", "Crowdly-BE\Cr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{BE330A5A-6DD0-4918-B4A9-CAC6B718531A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{210ACD67-2FA4-4772-BF6C-C7772A705320}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BE330A5A-6DD0-4918-B4A9-CAC6B718531A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE330A5A-6DD0-4918-B4A9-CAC6B718531A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE330A5A-6DD0-4918-B4A9-CAC6B718531A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{210ACD67-2FA4-4772-BF6C-C7772A705320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{210ACD67-2FA4-4772-BF6C-C7772A705320}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{210ACD67-2FA4-4772-BF6C-C7772A705320}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{210ACD67-2FA4-4772-BF6C-C7772A705320}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
