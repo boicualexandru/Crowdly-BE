@@ -9,6 +9,6 @@ namespace Services.Vendors
 
         Task<Vendor> CreateAsync(CreateVendorModel vendor);
 
-        Task UpdateAsync(UpdateVendorModel vendor);
+        Task<string[]> UpdateAsync(UpdateVendorModel vendor);
     }
 }

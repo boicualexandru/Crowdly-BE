@@ -6,6 +6,7 @@ using Services.Vendors;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Crowdly_BE.Controllers
@@ -36,10 +37,13 @@ namespace Crowdly_BE.Controllers
         [Route("")]
         public async Task<ActionResult<Vendor>> CreateVendorAsync([FromForm] CreateVendorModel vendor)
         {
-            var imageNames = UploadImages(vendor.FormFiles);
+            var vendorId = Guid.NewGuid();
+
+            var imageNames = UploadImages(vendorId, vendor.FormFiles);
 
             var createVendorModel = _mapper.Map<Services.Vendors.Models.CreateVendorModel>(vendor);
             createVendorModel.ImageUrls = imageNames;
+            createVendorModel.Id = vendorId;
 
             var newVendor = await _vendorsService.CreateAsync(createVendorModel);
 
@@ -47,27 +51,33 @@ namespace Crowdly_BE.Controllers
         }
 
         [HttpPut]
-        [Route("")]
-        public async Task<ActionResult> UpdateVendorAsync([FromForm] UpdateVendorModel vendor)
+        [Route("[vendorId]")]
+        public async Task<ActionResult> UpdateVendorAsync([FromRoute] Guid vendorId, [FromForm] UpdateVendorModel vendor)
         {
-            var imageNames = UploadImages(vendor.FormFiles);
+            var imageNames = UploadImages(vendorId, vendor.FormFiles);
 
             var updateVendorModel = _mapper.Map<Services.Vendors.Models.UpdateVendorModel>(vendor);
-            updateVendorModel.ImageUrls = imageNames;
-            await _vendorsService.UpdateAsync(updateVendorModel);
+            updateVendorModel.Id = vendorId;
+            updateVendorModel.ImageUrls = vendor.ExistingImageUrls.Concat(imageNames).ToArray();
+
+            var removedImages = await _vendorsService.UpdateAsync(updateVendorModel);
+
+            DeleteImages(vendorId, removedImages);
 
             return Ok();
         }
 
-        private string[] UploadImages(IFormFile[] formFiles)
+        private string[] UploadImages(Guid vendorId, IFormFile[] formFiles)
         {
             var imageNames = new List<string>();
+            var directory = GetOrCreateVendorDirectory(vendorId);
 
-            foreach(var formFile in formFiles)
+            foreach (var formFile in formFiles)
             {
                 var fileExtension = Path.GetExtension(formFile.FileName);
                 var imageName = Guid.NewGuid().ToString() + fileExtension;
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", imageName);
+
+                string path = Path.Combine(directory, imageName);
 
                 using (Stream stream = new FileStream(path, FileMode.Create))
                 {
@@ -78,6 +88,25 @@ namespace Crowdly_BE.Controllers
             }
 
             return imageNames.ToArray();
+        }
+
+        private void DeleteImages(Guid vendorId, string[] imageNames)
+        {
+            var directory = GetOrCreateVendorDirectory(vendorId);
+
+            foreach (var imageName in imageNames)
+            {
+                string path = Path.Combine(directory, imageName);
+                System.IO.File.Delete(path);
+            }
+        }
+
+        private string GetOrCreateVendorDirectory(Guid vendorId)
+        {
+            var directory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "vendors", vendorId.ToString());
+            Directory.CreateDirectory(directory);
+
+            return directory;
         }
     }
 }
