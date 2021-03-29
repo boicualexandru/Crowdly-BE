@@ -7,9 +7,11 @@ namespace Crowdly_BE.Vendors
         public VendorProfile()
         {
             CreateMap<Services.Vendors.Models.Vendor, Vendor>();
-            CreateMap<Vendor, Services.Vendors.Models.Vendor>();
 
-            CreateMap<CreateVendorModel, Services.Vendors.Models.CreateVendorModel>();
+            CreateMap<CreateVendorModel, Services.Vendors.Models.CreateVendorModel>()
+                .ForMember(dest => dest.ImageUrls, opt => opt.Ignore());
+            CreateMap<UpdateVendorModel, Services.Vendors.Models.UpdateVendorModel>()
+                .ForMember(dest => dest.ImageUrls, opt => opt.Ignore());
         }
     }
 }

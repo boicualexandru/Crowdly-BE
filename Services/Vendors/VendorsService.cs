@@ -23,6 +23,7 @@ namespace Services.Vendors
         {
             var dbVendor = _mapper.Map<DataAccess.Models.Vendor>(vendor);
             dbVendor.Id = Guid.NewGuid().ToString();
+            dbVendor.ThumbnailUrl = vendor.ImageUrls.FirstOrDefault();
 
             _dbContext.Vendors.Add(dbVendor);
             await _dbContext.SaveChangesAsync();
@@ -36,10 +37,11 @@ namespace Services.Vendors
             return _mapper.Map<Vendor[]>(dbVendors);
         }
 
-        public async Task UpdateAsync(Vendor vendor)
+        public async Task UpdateAsync(UpdateVendorModel vendor)
         {
             var dbVendor = _dbContext.Vendors.FirstOrDefault(v => v.Id == vendor.Id);
             _mapper.Map(vendor, dbVendor);
+            dbVendor.ThumbnailUrl = vendor.ImageUrls.FirstOrDefault();
 
             _dbContext.Vendors.Update(dbVendor);
             await _dbContext.SaveChangesAsync();

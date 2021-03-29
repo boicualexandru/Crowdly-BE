@@ -22,4 +22,13 @@ namespace Crowdly_BE.Vendors
         public double Price { get; set; }
         public IFormFile[] FormFiles { get; set; }
     }
+
+    public class UpdateVendorModel
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string City { get; set; }
+        public double Price { get; set; }
+        public IFormFile[] FormFiles { get; set; }
+    }
 }

@@ -8,9 +8,11 @@ namespace Services.Vendors.Mappers
         public VendorProfile()
         {
             CreateMap<DataAccess.Models.Vendor, Vendor>();
-            CreateMap<Vendor, DataAccess.Models.Vendor>();
 
-            CreateMap<CreateVendorModel, DataAccess.Models.Vendor>();
+            CreateMap<CreateVendorModel, DataAccess.Models.Vendor>()
+                .ForMember(dest => dest.ThumbnailUrl, opt => opt.Ignore());
+            CreateMap<UpdateVendorModel, DataAccess.Models.Vendor>()
+                .ForMember(dest => dest.ThumbnailUrl, opt => opt.Ignore());
         }
     }
 }

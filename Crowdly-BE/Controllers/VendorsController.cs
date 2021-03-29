@@ -38,9 +38,9 @@ namespace Crowdly_BE.Controllers
         {
             var imageNames = UploadImages(vendor.FormFiles);
 
-            // TODO: change service model to accept multiple image urls
             var createVendorModel = _mapper.Map<Services.Vendors.Models.CreateVendorModel>(vendor);
-            createVendorModel.ImageUrl = imageNames[0];
+            createVendorModel.ImageUrls = imageNames;
+
             var newVendor = await _vendorsService.CreateAsync(createVendorModel);
 
             return Ok(_mapper.Map<Vendor>(newVendor));
@@ -48,9 +48,13 @@ namespace Crowdly_BE.Controllers
 
         [HttpPut]
         [Route("")]
-        public async Task<ActionResult> UpdateVendorAsync(Vendor vendor)
+        public async Task<ActionResult> UpdateVendorAsync([FromForm] UpdateVendorModel vendor)
         {
-            await _vendorsService.UpdateAsync(_mapper.Map<Services.Vendors.Models.Vendor>(vendor));
+            var imageNames = UploadImages(vendor.FormFiles);
+
+            var updateVendorModel = _mapper.Map<Services.Vendors.Models.UpdateVendorModel>(vendor);
+            updateVendorModel.ImageUrls = imageNames;
+            await _vendorsService.UpdateAsync(updateVendorModel);
 
             return Ok();
         }
