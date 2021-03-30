@@ -51,7 +51,7 @@ namespace Crowdly_BE.Controllers
         }
 
         [HttpPut]
-        [Route("[vendorId]")]
+        [Route("{vendorId}")]
         public async Task<ActionResult> UpdateVendorAsync([FromRoute] Guid vendorId, [FromForm] UpdateVendorModel vendor)
         {
             var imageNames = UploadImages(vendorId, vendor.FormFiles);
