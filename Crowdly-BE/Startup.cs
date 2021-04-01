@@ -1,6 +1,8 @@
+using Crowdly_BE.Authorization;
 using DataAccess;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -60,6 +62,9 @@ namespace Crowdly_BE
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
                 };
             });
+
+            // Adding Authorization
+            services.AddSingleton<IAuthorizationHandler, VendorAuthorizationHandler>();
 
             services.AddSwaggerGen(swagger =>
             {

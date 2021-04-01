@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Crowdly_BE.Authorization;
 using Crowdly_BE.Vendors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Vendors;
@@ -15,11 +17,13 @@ namespace Crowdly_BE.Controllers
     [Route("[controller]")]
     public class VendorsController : ControllerBase
     {
+        private readonly IAuthorizationService _authorizationService;
         private readonly IVendorsService _vendorsService;
         private readonly IMapper _mapper;
 
-        public VendorsController(IVendorsService vendorsService, IMapper mapper)
+        public VendorsController(IAuthorizationService authorizationService, IVendorsService vendorsService, IMapper mapper)
         {
+            _authorizationService = authorizationService;
             _vendorsService = vendorsService;
             _mapper = mapper;
         }
@@ -33,6 +37,7 @@ namespace Crowdly_BE.Controllers
             return Ok(_mapper.Map<Vendor[]>(vendors));
         }
 
+        [Authorize]
         [HttpPost]
         [Route("")]
         public async Task<ActionResult<Vendor>> CreateVendorAsync([FromForm] CreateVendorModel vendor)
@@ -50,10 +55,25 @@ namespace Crowdly_BE.Controllers
             return Ok(_mapper.Map<Vendor>(newVendor));
         }
 
+        [Authorize]
         [HttpPut]
         [Route("{vendorId}")]
         public async Task<ActionResult> UpdateVendorAsync([FromRoute] Guid vendorId, [FromForm] UpdateVendorModel vendor)
         {
+            var existingVendor = await _vendorsService.GetByIdAsync(vendorId);
+            if (existingVendor is null)
+            {
+                return NotFound();
+            }
+
+            var authorizationResult = await _authorizationService
+                .AuthorizeAsync(User, existingVendor, VendorOperations.Update);
+
+            if (!authorizationResult.Succeeded)
+            {
+                return Unauthorized();
+            }
+
             var imageNames = UploadImages(vendorId, vendor.FormFiles);
 
             var updateVendorModel = _mapper.Map<Services.Vendors.Models.UpdateVendorModel>(vendor);
@@ -61,6 +81,32 @@ namespace Crowdly_BE.Controllers
             updateVendorModel.ImageUrls = vendor.ExistingImageUrls.Concat(imageNames).ToArray();
 
             var removedImages = await _vendorsService.UpdateAsync(updateVendorModel);
+
+            DeleteImages(vendorId, removedImages);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpDelete]
+        [Route("{vendorId}")]
+        public async Task<ActionResult> DeleteVendorAsync([FromRoute] Guid vendorId)
+        {
+            var existingVendor = await _vendorsService.GetByIdAsync(vendorId);
+            if (existingVendor is null)
+            {
+                return NotFound();
+            }
+
+            var authorizationResult = await _authorizationService
+                .AuthorizeAsync(User, existingVendor, VendorOperations.Delete);
+
+            if (!authorizationResult.Succeeded)
+            {
+                return Unauthorized();
+            }
+
+            var removedImages = await _vendorsService.DeleteByIdAsync(vendorId);
 
             DeleteImages(vendorId, removedImages);
 

@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ActionFilters\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

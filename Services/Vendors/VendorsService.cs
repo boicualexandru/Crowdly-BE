@@ -36,6 +36,12 @@ namespace Services.Vendors
             return _mapper.Map<Vendor[]>(dbVendors);
         }
 
+        public async Task<Vendor> GetByIdAsync(Guid id)
+        {
+            var vendor = await _dbContext.Vendors.FirstOrDefaultAsync(v => v.Id == id);
+            return _mapper.Map<Vendor>(vendor);
+        }
+
         public async Task<string[]> UpdateAsync(UpdateVendorModel vendor)
         {
             var dbVendor = _dbContext.Vendors.FirstOrDefault(v => v.Id == vendor.Id);
@@ -49,6 +55,16 @@ namespace Services.Vendors
             await _dbContext.SaveChangesAsync();
 
             return removedImages;
+        }
+
+        public async Task<string[]> DeleteByIdAsync(Guid id)
+        {
+            var dbVendor = _dbContext.Vendors.FirstOrDefault(v => v.Id == id);
+
+            _dbContext.Vendors.Remove(dbVendor);
+            await _dbContext.SaveChangesAsync();
+
+            return dbVendor.ImageUrls;
         }
     }
 }

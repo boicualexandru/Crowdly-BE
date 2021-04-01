@@ -9,5 +9,6 @@ namespace Services.Vendors.Models
         public string City { get; set; }
         public double Price { get; set; }
         public string ThumbnailUrl { get; set; }
+        public string CreatedByUserId { get; set; }
     }
 }
