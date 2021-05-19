@@ -12,6 +12,15 @@ namespace Crowdly_BE.Vendors
         public string ThumbnailUrl { get; set; }
     }
 
+    public class VendorDetails
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string City { get; set; }
+        public double Price { get; set; }
+        public string[] ImageUrls { get; set; }
+    }
+
     public class CreateVendorModel
     {
         public string Name { get; set; }
@@ -25,7 +34,7 @@ namespace Crowdly_BE.Vendors
         public string Name { get; set; }
         public string City { get; set; }
         public double Price { get; set; }
-        public IFormFile[] FormFiles { get; set; }
+        public IFormFile[]? FormFiles { get; set; }
         public string[] ExistingImageUrls { get; set; }
     }
 }

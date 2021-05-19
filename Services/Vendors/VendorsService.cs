@@ -36,10 +36,10 @@ namespace Services.Vendors
             return _mapper.Map<Vendor[]>(dbVendors);
         }
 
-        public async Task<Vendor> GetByIdAsync(Guid id)
+        public async Task<VendorDetails> GetByIdAsync(Guid id)
         {
             var vendor = await _dbContext.Vendors.FirstOrDefaultAsync(v => v.Id == id);
-            return _mapper.Map<Vendor>(vendor);
+            return _mapper.Map<VendorDetails>(vendor);
         }
 
         public async Task<string[]> UpdateAsync(UpdateVendorModel vendor)

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Crowdly_BE.Authorization;
 using Crowdly_BE.Vendors;
 using Microsoft.AspNetCore.Authorization;
@@ -37,7 +37,14 @@ namespace Crowdly_BE.Controllers
             return Ok(_mapper.Map<Vendor[]>(vendors));
         }
 
-        [Authorize]
+        [HttpGet]
+        [Route("{vendorId}")]
+        public async Task<ActionResult<VendorDetails>> GetVendorAsync([FromRoute]Guid vendorId)
+        {
+            var vendor = await _vendorsService.GetByIdAsync(vendorId);
+
+            return Ok(_mapper.Map<VendorDetails>(vendor));
+        }
         [HttpPost]
         [Route("")]
         public async Task<ActionResult<Vendor>> CreateVendorAsync([FromForm] CreateVendorModel vendor)
@@ -78,7 +85,7 @@ namespace Crowdly_BE.Controllers
 
             var updateVendorModel = _mapper.Map<Services.Vendors.Models.UpdateVendorModel>(vendor);
             updateVendorModel.Id = vendorId;
-            updateVendorModel.ImageUrls = vendor.ExistingImageUrls.Concat(imageNames).ToArray();
+            updateVendorModel.ImageUrls = (vendor.ExistingImageUrls ?? new string[0]).Concat(imageNames).ToArray();
 
             var removedImages = await _vendorsService.UpdateAsync(updateVendorModel);
 
@@ -115,6 +122,8 @@ namespace Crowdly_BE.Controllers
 
         private string[] UploadImages(Guid vendorId, IFormFile[] formFiles)
         {
+            if (formFiles is null) return new string[0];
+
             var imageNames = new List<string>();
             var directory = GetOrCreateVendorDirectory(vendorId);
 
