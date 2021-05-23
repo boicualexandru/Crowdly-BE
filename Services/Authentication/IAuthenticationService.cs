@@ -6,6 +6,6 @@ namespace Services.Authentication
     public interface IAuthenticationService
     {
         Task<LoginResponse> LoginAsync(LoginModel loginModel);
-        Task<string[]> RegisterAsync(RegisterModel registerModel);
+        Task<LoginResponse> RegisterAsync(RegisterModel registerModel);
     }
 }

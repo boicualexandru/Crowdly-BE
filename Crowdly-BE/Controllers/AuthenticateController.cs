@@ -34,14 +34,14 @@ namespace Crowdly_BE.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel model)
+        public async Task<ActionResult<LoginResponse>> Register([FromBody] RegisterModel model)
         {
-            var errorMessages = await _authenticationService.RegisterAsync(_mapper.Map<Services.Authentication.Models.RegisterModel>(model));
+            var registerResponse = await _authenticationService.RegisterAsync(_mapper.Map<Services.Authentication.Models.RegisterModel>(model));
 
-            if (errorMessages.Any())
-                return BadRequest(errorMessages);
-
-            return Ok();
+            if (registerResponse.ErrorMessages.Any())
+                return BadRequest(registerResponse.ErrorMessages);
+            
+            return _mapper.Map<LoginResponse>(registerResponse);
         }
     }
 }

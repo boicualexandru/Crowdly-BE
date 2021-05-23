@@ -33,6 +33,51 @@ namespace Services.Authentication
                     ErrorMessages = new string[] { "Username or Password incorrect." }
                 };
 
+            JwtSecurityToken token = await CreateAuthTokenAsync(user);
+
+            return new LoginResponse
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                ValidTo = token.ValidTo,
+                ErrorMessages = new string[0]
+            };
+        }
+
+        public async Task<LoginResponse> RegisterAsync(RegisterModel registerModel)
+        {
+            var userExists = await _userManager.FindByNameAsync(registerModel.Username);
+            if (userExists != null)
+                return new LoginResponse
+                {
+                    ErrorMessages = new string[] { "User already exists." }
+                };
+
+            ApplicationUser user = new ApplicationUser()
+            {
+                Email = registerModel.Email,
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = registerModel.Username
+            };
+
+            var result = await _userManager.CreateAsync(user, registerModel.Password);
+            if (!result.Succeeded)
+                return new LoginResponse
+                {
+                    ErrorMessages = result.Errors.Select(err => err.Description).ToArray()
+                };
+
+            JwtSecurityToken token = await CreateAuthTokenAsync(user);
+
+            return new LoginResponse
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                ValidTo = token.ValidTo,
+                ErrorMessages = new string[0]
+            };
+        }
+
+        private async Task<JwtSecurityToken> CreateAuthTokenAsync(ApplicationUser user)
+        {
             var userRoles = await _userManager.GetRolesAsync(user);
 
             var authClaims = new List<Claim>
@@ -57,32 +102,7 @@ namespace Services.Authentication
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );
 
-            return new LoginResponse
-            {
-                Token = new JwtSecurityTokenHandler().WriteToken(token),
-                ValidTo = token.ValidTo,
-                ErrorMessages = new string[0]
-            };
-        }
-
-        public async Task<string[]> RegisterAsync(RegisterModel registerModel)
-        {
-            var userExists = await _userManager.FindByNameAsync(registerModel.Username);
-            if (userExists != null)
-                return new string[] { "User already exists." };
-
-            ApplicationUser user = new ApplicationUser()
-            {
-                Email = registerModel.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = registerModel.Username
-            };
-
-            var result = await _userManager.CreateAsync(user, registerModel.Password);
-            if (!result.Succeeded)
-                return result.Errors.Select(err => err.Description).ToArray();
-
-            return new string[0];
+            return token;
         }
     }
 }
