@@ -50,7 +50,11 @@ namespace Crowdly_BE
                 .AddDefaultTokenProviders();
 
             // Adding Authentication  
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
             // Adding Jwt Bearer  
             .AddJwtBearer(options =>
             {

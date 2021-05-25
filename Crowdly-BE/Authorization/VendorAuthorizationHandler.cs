@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Crowdly_BE.Authorization
@@ -26,7 +26,7 @@ namespace Crowdly_BE.Authorization
 
             if (_allowedOperationForOwner.Contains(requirement.Name))
             {
-                var userId = context.User.FindFirst(JwtRegisteredClaimNames.Sub).Value;
+                var userId = context.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 if (userId == resource.CreatedByUserId)
                 {
                     context.Succeed(requirement);

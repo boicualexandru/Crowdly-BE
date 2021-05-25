@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Vendors;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Crowdly_BE.Controllers
@@ -39,11 +39,10 @@ namespace Crowdly_BE.Controllers
         }
 
         [Authorize]
-        [HttpGet]
-        [Route("Editable")]
+        [HttpGet("Editable")]
         public async Task<ActionResult<Vendor[]>> GetEditableVendorsAsync()
         {
-            var userId = User.FindFirst(JwtRegisteredClaimNames.Sub).Value;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var vendors = await _vendorsService.GetByUser(userId);
 
@@ -187,7 +186,7 @@ namespace Crowdly_BE.Controllers
 
             if (User is null) return vendorResponse;
 
-            var userId = User.FindFirst(JwtRegisteredClaimNames.Sub).Value;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var vendorByUser = await _vendorsService.GetByUser(userId);
 
