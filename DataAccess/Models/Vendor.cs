@@ -10,8 +10,19 @@ namespace DataAccess.Models
         public double Price { get; set; }
         public string ThumbnailUrl { get; set; }
         public string[] ImageUrls { get; set; }
+        public VendorCategoryType Category { get; set; }
 
         public string CreatedByUserId { get; set; }
         public ApplicationUser CreatedByUser { get; set; }
+    }
+
+    public enum VendorCategoryType
+    {
+        None = 0,
+        Location = 1,
+        Music = 2,
+        Photo = 3,
+        Video = 4,
+        Food = 5,
     }
 }
