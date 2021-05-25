@@ -40,6 +40,18 @@ namespace Crowdly_BE.Controllers
 
         [Authorize]
         [HttpGet]
+        [Route("Editable")]
+        public async Task<ActionResult<Vendor[]>> GetEditableVendorsAsync()
+        {
+            var userId = User.FindFirst(JwtRegisteredClaimNames.Sub).Value;
+
+            var vendors = await _vendorsService.GetByUser(userId);
+
+            return Ok(_mapper.Map<Vendor[]>(vendors));
+        }
+
+        [Authorize]
+        [HttpGet]
         [Route("{vendorId}")]
         public async Task<ActionResult<VendorDetails>> GetVendorAsync([FromRoute]Guid vendorId)
         {
