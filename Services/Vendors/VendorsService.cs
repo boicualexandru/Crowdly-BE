@@ -42,6 +42,12 @@ namespace Services.Vendors
             return _mapper.Map<VendorDetails>(vendor);
         }
 
+        public async Task<Vendor[]> GetByUser(string userId)
+        {
+            var dbVendors = await _dbContext.Vendors.Where(v => v.CreatedByUserId == userId).ToArrayAsync();
+            return _mapper.Map<Vendor[]>(dbVendors);
+        }
+
         public async Task<string[]> UpdateAsync(UpdateVendorModel vendor)
         {
             var dbVendor = _dbContext.Vendors.FirstOrDefault(v => v.Id == vendor.Id);

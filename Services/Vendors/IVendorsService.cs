@@ -7,6 +7,7 @@ namespace Services.Vendors
     public interface IVendorsService
     {
         Task<Vendor[]> GetAllAsync();
+        Task<Vendor[]> GetByUser(string userId);
         Task<VendorDetails> GetByIdAsync(Guid id);
         Task<Vendor> CreateAsync(CreateVendorModel vendor);
         Task<string[]> UpdateAsync(UpdateVendorModel vendor);
