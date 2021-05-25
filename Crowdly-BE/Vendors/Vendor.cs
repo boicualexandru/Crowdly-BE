@@ -19,6 +19,7 @@ namespace Crowdly_BE.Vendors
         public string City { get; set; }
         public double Price { get; set; }
         public string[] ImageUrls { get; set; }
+        public bool IsEditable { get; set; }
     }
 
     public class CreateVendorModel

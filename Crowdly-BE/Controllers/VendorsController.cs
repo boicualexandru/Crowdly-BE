@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Crowdly_BE.Authorization;
 using Crowdly_BE.Vendors;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Vendors;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,14 +38,17 @@ namespace Crowdly_BE.Controllers
             return Ok(_mapper.Map<Vendor[]>(vendors));
         }
 
+        [Authorize]
         [HttpGet]
         [Route("{vendorId}")]
         public async Task<ActionResult<VendorDetails>> GetVendorAsync([FromRoute]Guid vendorId)
         {
             var vendor = await _vendorsService.GetByIdAsync(vendorId);
 
-            return Ok(_mapper.Map<VendorDetails>(vendor));
+            return Ok(ConvertToVendorResponse(vendor));
         }
+
+        [Authorize]
         [HttpPost]
         [Route("")]
         public async Task<ActionResult<Vendor>> CreateVendorAsync([FromForm] CreateVendorModel vendor)
@@ -162,6 +166,21 @@ namespace Crowdly_BE.Controllers
             Directory.CreateDirectory(directory);
 
             return directory;
+        }
+
+        private async Task<VendorDetails> ConvertToVendorResponse(Services.Vendors.Models.VendorDetails vendor)
+        {
+            var vendorResponse = _mapper.Map<VendorDetails>(vendor);
+            vendorResponse.IsEditable = false;
+
+            if (User is null) return vendorResponse;
+
+            var userId = User.FindFirst(JwtRegisteredClaimNames.Sub).Value;
+
+            var vendorByUser = await _vendorsService.GetByUser(userId);
+
+            vendorResponse.IsEditable = vendorByUser.Select(v => v.Id).Contains(vendor.Id);
+            return vendorResponse;
         }
     }
 }
