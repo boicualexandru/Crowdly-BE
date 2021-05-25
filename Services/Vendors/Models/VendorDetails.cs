@@ -10,5 +10,6 @@ namespace Services.Vendors.Models
         public double Price { get; set; }
         public string[] ImageUrls { get; set; }
         public string CreatedByUserId { get; set; }
+        public VendorCategoryType Category { get; set; }
     }
 }

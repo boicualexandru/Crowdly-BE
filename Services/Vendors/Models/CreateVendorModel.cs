@@ -9,5 +9,6 @@ namespace Services.Vendors.Models
         public string City { get; set; }
         public double Price { get; set; }
         public string[] ImageUrls { get; set; }
+        public VendorCategoryType Category { get; set; }
     }
 }
