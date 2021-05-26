@@ -42,7 +42,7 @@ namespace Crowdly_BE.Controllers
         [HttpGet("Editable")]
         public async Task<ActionResult<Vendor[]>> GetEditableVendorsAsync()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var vendors = await _vendorsService.GetByUser(userId);
 
@@ -56,7 +56,7 @@ namespace Crowdly_BE.Controllers
         {
             var vendor = await _vendorsService.GetByIdAsync(vendorId);
 
-            return Ok(ConvertToVendorResponse(vendor));
+            return Ok(await ConvertToVendorResponseAsync(vendor));
         }
 
         [Authorize]
@@ -71,6 +71,7 @@ namespace Crowdly_BE.Controllers
             var createVendorModel = _mapper.Map<Services.Vendors.Models.CreateVendorModel>(vendor);
             createVendorModel.ImageUrls = imageNames;
             createVendorModel.Id = vendorId;
+            createVendorModel.CreatedByUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var newVendor = await _vendorsService.CreateAsync(createVendorModel);
 
@@ -179,14 +180,14 @@ namespace Crowdly_BE.Controllers
             return directory;
         }
 
-        private async Task<VendorDetails> ConvertToVendorResponse(Services.Vendors.Models.VendorDetails vendor)
+        private async Task<VendorDetails> ConvertToVendorResponseAsync(Services.Vendors.Models.VendorDetails vendor)
         {
             var vendorResponse = _mapper.Map<VendorDetails>(vendor);
             vendorResponse.IsEditable = false;
 
             if (User is null) return vendorResponse;
 
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var vendorByUser = await _vendorsService.GetByUser(userId);
 

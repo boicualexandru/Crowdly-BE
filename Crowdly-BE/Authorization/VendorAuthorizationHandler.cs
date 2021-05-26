@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Crowdly_BE.Authorization
 {
-    public class VendorAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, Services.Vendors.Models.Vendor>
+    public class VendorAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, Services.Vendors.Models.VendorDetails>
     {
         private readonly string[] _allowedOperationForOwner = new[] {
             VendorOperations.Update.Name,
@@ -17,7 +17,7 @@ namespace Crowdly_BE.Authorization
         protected override Task HandleRequirementAsync(
                                               AuthorizationHandlerContext context,
                                     OperationAuthorizationRequirement requirement,
-                                     Services.Vendors.Models.Vendor resource)
+                                     Services.Vendors.Models.VendorDetails resource)
         {
             if (context.User == null)
             {
@@ -26,7 +26,7 @@ namespace Crowdly_BE.Authorization
 
             if (_allowedOperationForOwner.Contains(requirement.Name))
             {
-                var userId = context.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (userId == resource.CreatedByUserId)
                 {
                     context.Succeed(requirement);
