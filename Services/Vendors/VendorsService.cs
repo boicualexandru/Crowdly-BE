@@ -13,6 +13,8 @@ namespace Services.Vendors
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
 
+        private const int PAGE_SIZE = 5;
+
         public VendorsService(ApplicationDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
@@ -30,10 +32,25 @@ namespace Services.Vendors
             return _mapper.Map<Vendor>(dbVendor);
         }
 
-        public async Task<Vendor[]> GetAllAsync()
+        public async Task<DataPage<Vendor>> GetAllAsync(VendorsFilters filters)
         {
-            var dbVendors = await _dbContext.Vendors.ToArrayAsync();
-            return _mapper.Map<Vendor[]>(dbVendors);
+            var dbVendorsQuery = _dbContext.Vendors.AsQueryable();
+
+            if (!String.IsNullOrWhiteSpace(filters.City))
+                dbVendorsQuery = dbVendorsQuery.Where(vendor => vendor.City == filters.City);
+
+            if (filters.Skip > 0)
+                dbVendorsQuery = dbVendorsQuery.Skip(filters.Skip.Value);
+
+            var data = await dbVendorsQuery.Take(PAGE_SIZE + 1).ToArrayAsync();
+
+            var page = new DataPage<Vendor>()
+            {
+                Data = _mapper.Map<Vendor[]>(data.Take(PAGE_SIZE)),
+                HasMore = data.Length > PAGE_SIZE
+            };
+
+            return page;
         }
 
         public async Task<VendorDetails> GetByIdAsync(Guid id)

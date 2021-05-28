@@ -13,6 +13,12 @@ namespace Crowdly_BE.Vendors
         public VendorCategoryType Category { get; set; }
     }
 
+    public class VendorsFilters
+    {
+        public string City { get; set; }
+        public int? Skip { get; set; }
+    }
+
     public class VendorDetails
     {
         public Guid Id { get; set; }

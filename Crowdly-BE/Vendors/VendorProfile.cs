@@ -7,6 +7,9 @@ namespace Crowdly_BE.Vendors
         public VendorProfile()
         {
             CreateMap<Services.Vendors.Models.Vendor, Vendor>();
+            CreateMap<Services.Vendors.Models.DataPage<Services.Vendors.Models.Vendor>, DataPage<Vendor>>();
+            CreateMap<VendorsFilters, Services.Vendors.Models.VendorsFilters>();
+
             CreateMap<Services.Vendors.Models.VendorDetails, VendorDetails>();
 
             CreateMap<CreateVendorModel, Services.Vendors.Models.CreateVendorModel>()

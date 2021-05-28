@@ -31,11 +31,11 @@ namespace Crowdly_BE.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult<Vendor[]>> GetVendorsAsync()
+        public async Task<ActionResult<Vendor[]>> GetVendorsAsync([FromQuery]VendorsFilters filters)
         {
-            var vendors = await _vendorsService.GetAllAsync();
+            var vendors = await _vendorsService.GetAllAsync(_mapper.Map<Services.Vendors.Models.VendorsFilters>(filters));
 
-            return Ok(_mapper.Map<Vendor[]>(vendors));
+            return Ok(_mapper.Map<DataPage<Vendor>>(vendors));
         }
 
         [Authorize]
