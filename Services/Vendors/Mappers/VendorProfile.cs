@@ -8,6 +8,8 @@ namespace Services.Vendors.Mappers
         public VendorProfile()
         {
             CreateMap<DataAccess.Models.Vendor, Vendor>();
+            CreateMap<VendorCategoryType, DataAccess.Models.VendorCategoryType>();
+
             CreateMap<DataAccess.Models.Vendor, VendorDetails>();
 
             CreateMap<CreateVendorModel, DataAccess.Models.Vendor>()

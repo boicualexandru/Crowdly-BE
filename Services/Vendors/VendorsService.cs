@@ -39,6 +39,12 @@ namespace Services.Vendors
             if (!String.IsNullOrWhiteSpace(filters.City))
                 dbVendorsQuery = dbVendorsQuery.Where(vendor => vendor.City == filters.City);
 
+            if (filters.Category != VendorCategoryType.None)
+            {
+                var category = _mapper.Map<DataAccess.Models.VendorCategoryType>(filters.Category);
+                dbVendorsQuery = dbVendorsQuery.Where(vendor => vendor.Category == category);
+            }
+
             if (filters.Skip > 0)
                 dbVendorsQuery = dbVendorsQuery.Skip(filters.Skip.Value);
 

@@ -9,6 +9,7 @@ namespace Services.Vendors.Models
     public class VendorsFilters
     {
         public string City { get; set; }
+        public VendorCategoryType Category { get; set; }
         public int? Skip { get; set; }
     }
 }
