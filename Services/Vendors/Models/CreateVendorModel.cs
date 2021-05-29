@@ -8,7 +8,7 @@ namespace Services.Vendors.Models
         public string Name { get; set; }
         public string City { get; set; }
         public double Price { get; set; }
-        public string[] ImageUrls { get; set; }
+        public string[] Images { get; set; }
         public string CreatedByUserId { get; set; }
         public VendorCategoryType Category { get; set; }
     }

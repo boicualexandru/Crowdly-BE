@@ -69,7 +69,7 @@ namespace Crowdly_BE.Controllers
             var imageNames = UploadImages(vendorId, vendor.FormFiles);
 
             var createVendorModel = _mapper.Map<Services.Vendors.Models.CreateVendorModel>(vendor);
-            createVendorModel.ImageUrls = imageNames;
+            createVendorModel.Images = imageNames;
             createVendorModel.Id = vendorId;
             createVendorModel.CreatedByUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -101,7 +101,7 @@ namespace Crowdly_BE.Controllers
 
             var updateVendorModel = _mapper.Map<Services.Vendors.Models.UpdateVendorModel>(vendor);
             updateVendorModel.Id = vendorId;
-            updateVendorModel.ImageUrls = (vendor.ExistingImageUrls ?? new string[0]).Concat(imageNames).ToArray();
+            updateVendorModel.Images = (vendor.ExistingImages ?? new string[0]).Concat(imageNames).ToArray();
 
             var removedImages = await _vendorsService.UpdateAsync(updateVendorModel);
 

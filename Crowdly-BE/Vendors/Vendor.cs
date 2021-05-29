@@ -31,7 +31,7 @@ namespace Crowdly_BE.Vendors
         public string Email { get; set; }
         public string Description { get; set; }
         public double Price { get; set; }
-        public string[] ImageUrls { get; set; }
+        public string[] Images { get; set; }
         public bool IsEditable { get; set; }
         public VendorCategoryType Category { get; set; }
     }
@@ -51,7 +51,7 @@ namespace Crowdly_BE.Vendors
         public string City { get; set; }
         public double Price { get; set; }
         public IFormFile[]? FormFiles { get; set; }
-        public string[] ExistingImageUrls { get; set; }
+        public string[] ExistingImages { get; set; }
         public VendorCategoryType Category { get; set; }
     }
 

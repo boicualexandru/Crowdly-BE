@@ -14,7 +14,7 @@ namespace DataAccess.Models
         public string Description { get; set; }
         public double Price { get; set; }
         public string ThumbnailUrl { get; set; }
-        public string[] ImageUrls { get; set; }
+        public string[] Images { get; set; }
         public VendorCategoryType Category { get; set; }
 
         public string CreatedByUserId { get; set; }

@@ -24,7 +24,7 @@ namespace Services.Vendors
         public async Task<Vendor> CreateAsync(CreateVendorModel vendor)
         {
             var dbVendor = _mapper.Map<DataAccess.Models.Vendor>(vendor);
-            dbVendor.ThumbnailUrl = vendor.ImageUrls.FirstOrDefault();
+            dbVendor.ThumbnailUrl = vendor.Images.FirstOrDefault();
 
             _dbContext.Vendors.Add(dbVendor);
             await _dbContext.SaveChangesAsync();
@@ -75,10 +75,10 @@ namespace Services.Vendors
         {
             var dbVendor = _dbContext.Vendors.FirstOrDefault(v => v.Id == vendor.Id);
 
-            var removedImages = dbVendor.ImageUrls.Where(imageUrl => !vendor.ImageUrls.Contains(imageUrl)).ToArray();
+            var removedImages = dbVendor.Images.Where(image => !vendor.Images.Contains(image)).ToArray();
 
             _mapper.Map(vendor, dbVendor);
-            dbVendor.ThumbnailUrl = dbVendor.ImageUrls.FirstOrDefault();
+            dbVendor.ThumbnailUrl = dbVendor.Images.FirstOrDefault();
 
             _dbContext.Vendors.Update(dbVendor);
             await _dbContext.SaveChangesAsync();
@@ -93,7 +93,7 @@ namespace Services.Vendors
             _dbContext.Vendors.Remove(dbVendor);
             await _dbContext.SaveChangesAsync();
 
-            return dbVendor.ImageUrls;
+            return dbVendor.Images;
         }
     }
 }
