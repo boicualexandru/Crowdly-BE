@@ -13,9 +13,9 @@ namespace Services.Vendors.Mappers
             CreateMap<DataAccess.Models.Vendor, VendorDetails>();
 
             CreateMap<CreateVendorModel, DataAccess.Models.Vendor>()
-                .ForMember(dest => dest.ThumbnailUrl, opt => opt.Ignore());
+                .ForMember(dest => dest.Thumbnail, opt => opt.Ignore());
             CreateMap<UpdateVendorModel, DataAccess.Models.Vendor>()
-                .ForMember(dest => dest.ThumbnailUrl, opt => opt.Ignore());
+                .ForMember(dest => dest.Thumbnail, opt => opt.Ignore());
         }
     }
 }
