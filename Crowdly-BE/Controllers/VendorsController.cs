@@ -42,7 +42,7 @@ namespace Crowdly_BE.Controllers
         [HttpGet("Editable")]
         public async Task<ActionResult<Vendor[]>> GetEditableVendorsAsync()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             var vendors = await _vendorsService.GetByUser(userId);
 
@@ -187,7 +187,7 @@ namespace Crowdly_BE.Controllers
 
             if (User is null) return vendorResponse;
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             var vendorByUser = await _vendorsService.GetByUser(userId);
 

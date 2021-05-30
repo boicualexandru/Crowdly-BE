@@ -15,7 +15,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Services.Authentication;
+using Services.SchedulePeriods;
 using Services.Vendors;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -39,13 +41,14 @@ namespace Crowdly_BE
 
             services.AddAutoMapper(typeof(Startup));
             services.AddAutoMapper(typeof(VendorsService));
+            services.AddAutoMapper(typeof(SchedulePeriodsService));
 
             services.AddControllers();
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("ConnStr")));
 
             // For Identity  
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -103,6 +106,7 @@ namespace Crowdly_BE
             // Services DI
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IVendorsService, VendorsService>();
+            services.AddTransient<ISchedulePeriodsService, SchedulePeriodsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

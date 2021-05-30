@@ -18,7 +18,7 @@ namespace DataAccess.Models
         public string[] Images { get; set; }
         public VendorCategoryType Category { get; set; }
 
-        public string CreatedByUserId { get; set; }
+        public Guid CreatedByUserId { get; set; }
         public ApplicationUser CreatedByUser { get; set; }
 
         public List<SchedulePeriod> SchedulePeriods { get; set; }

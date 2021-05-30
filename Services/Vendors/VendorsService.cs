@@ -70,7 +70,7 @@ namespace Services.Vendors
             return _mapper.Map<VendorDetails>(vendor);
         }
 
-        public async Task<Vendor[]> GetByUser(string userId)
+        public async Task<Vendor[]> GetByUser(Guid userId)
         {
             var dbVendors = await _dbContext.Vendors.Where(v => v.CreatedByUserId == userId).ToArrayAsync();
             return _mapper.Map<Vendor[]>(dbVendors);
