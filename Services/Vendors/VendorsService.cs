@@ -45,6 +45,11 @@ namespace Services.Vendors
                 dbVendorsQuery = dbVendorsQuery.Where(vendor => vendor.Category == category);
             }
 
+            if (filters.PriceMin.HasValue)
+                dbVendorsQuery = dbVendorsQuery.Where(vendor => vendor.Price >= filters.PriceMin.Value);
+            if (filters.PriceMax.HasValue)
+                dbVendorsQuery = dbVendorsQuery.Where(vendor => vendor.Price <= filters.PriceMax.Value);
+
             if (filters.Skip > 0)
                 dbVendorsQuery = dbVendorsQuery.Skip(filters.Skip.Value);
 
