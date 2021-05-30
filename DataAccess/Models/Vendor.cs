@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DataAccess.Models
 {
@@ -19,6 +20,8 @@ namespace DataAccess.Models
 
         public string CreatedByUserId { get; set; }
         public ApplicationUser CreatedByUser { get; set; }
+
+        public List<SchedulePeriod> SchedulePeriods { get; set; }
     }
 
     public enum VendorCategoryType
