@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.SchedulePeriods.Models
+namespace Crowdly_BE.Models.SchedulePeriods
 {
-    public class CreateSchedulePeriodModel
+    public class SchedulePeriod
     {
+        public Guid Id { get; set; }
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public Guid VendorId { get; set; }
         public Guid? BookedByUserId { get; set; }
+    }
+
+    public class CreateSchedulePeriodModel
+    {
+        public string Description { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Crowdly_BE.Authorization;
-using Crowdly_BE.Vendors;
+using Crowdly_BE.Models.Vendors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -71,7 +71,7 @@ namespace Crowdly_BE.Controllers
             var createVendorModel = _mapper.Map<Services.Vendors.Models.CreateVendorModel>(vendor);
             createVendorModel.Images = imageNames;
             createVendorModel.Id = vendorId;
-            createVendorModel.CreatedByUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            createVendorModel.CreatedByUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             var newVendor = await _vendorsService.CreateAsync(createVendorModel);
 
@@ -84,18 +84,11 @@ namespace Crowdly_BE.Controllers
         public async Task<ActionResult> UpdateVendorAsync([FromRoute] Guid vendorId, [FromForm] UpdateVendorModel vendor)
         {
             var existingVendor = await _vendorsService.GetByIdAsync(vendorId);
-            if (existingVendor is null)
-            {
-                return NotFound();
-            }
+            if (existingVendor is null) return NotFound();
 
             var authorizationResult = await _authorizationService
                 .AuthorizeAsync(User, existingVendor, VendorOperations.Update);
-
-            if (!authorizationResult.Succeeded)
-            {
-                return Unauthorized();
-            }
+            if (!authorizationResult.Succeeded)  return Unauthorized();
 
             var imageNames = UploadImages(vendorId, vendor.FormFiles);
 
@@ -116,18 +109,12 @@ namespace Crowdly_BE.Controllers
         public async Task<ActionResult> DeleteVendorAsync([FromRoute] Guid vendorId)
         {
             var existingVendor = await _vendorsService.GetByIdAsync(vendorId);
-            if (existingVendor is null)
-            {
-                return NotFound();
-            }
+            if (existingVendor is null) return NotFound();
 
             var authorizationResult = await _authorizationService
                 .AuthorizeAsync(User, existingVendor, VendorOperations.Delete);
 
-            if (!authorizationResult.Succeeded)
-            {
-                return Unauthorized();
-            }
+            if (!authorizationResult.Succeeded) return Unauthorized();
 
             var removedImages = await _vendorsService.DeleteByIdAsync(vendorId);
 

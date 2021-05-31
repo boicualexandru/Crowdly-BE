@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Crowdly_BE.Vendors
+namespace Crowdly_BE.Models.Vendors
 {
     public class DataPage<T>
     {

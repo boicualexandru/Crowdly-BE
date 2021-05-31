@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 
-namespace Crowdly_BE.Vendors
+namespace Crowdly_BE.Models.Vendors
 {
     public class Vendor
     {

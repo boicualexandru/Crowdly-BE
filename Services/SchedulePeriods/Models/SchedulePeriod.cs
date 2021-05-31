@@ -13,6 +13,6 @@ namespace Services.SchedulePeriods.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public Guid VendorId { get; set; }
-        public string? BookedByUserId { get; set; }
+        public Guid? BookedByUserId { get; set; }
     }
 }

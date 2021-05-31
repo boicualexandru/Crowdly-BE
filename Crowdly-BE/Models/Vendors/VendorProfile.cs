@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace Crowdly_BE.Vendors
+namespace Crowdly_BE.Models.Vendors
 {
     public class VendorProfile : Profile
     {

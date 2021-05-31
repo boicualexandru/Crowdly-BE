@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Crowdly_BE.Authentication;
+using Crowdly_BE.Models.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Services.Authentication;
 using System.Linq;

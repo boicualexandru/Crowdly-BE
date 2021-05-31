@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Crowdly_BE.Authentication
+namespace Crowdly_BE.Models.Authentication
 {
     public class LoginResponse
     {

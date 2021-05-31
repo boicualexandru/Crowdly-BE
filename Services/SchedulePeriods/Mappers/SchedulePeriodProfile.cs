@@ -15,6 +15,7 @@ namespace Services.SchedulePeriods.Mappers
             CreateMap<DataAccess.Models.SchedulePeriod, SchedulePeriod>();
 
             CreateMap<CreateSchedulePeriodModel, DataAccess.Models.SchedulePeriod>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
         }
     }

@@ -21,12 +21,13 @@ namespace Crowdly_BE.Authorization
         {
             if (context.User == null)
             {
+                context.Fail();
                 return Task.CompletedTask;
             }
 
             if (_allowedOperationForOwner.Contains(requirement.Name))
             {
-                var userId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = new Guid(context.User.FindFirstValue(ClaimTypes.NameIdentifier));
                 if (userId == resource.CreatedByUserId)
                 {
                     context.Succeed(requirement);

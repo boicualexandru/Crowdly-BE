@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Crowdly_BE.Authentication
+namespace Crowdly_BE.Models.Authentication
 {
     public class LoginModel
     {
