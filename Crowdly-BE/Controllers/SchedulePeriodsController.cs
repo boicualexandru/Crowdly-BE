@@ -33,8 +33,8 @@ namespace Crowdly_BE.Controllers
         }
 
         [HttpGet]
-        [Route("Vendor/{vendorId}/SchedulePeriods")]
-        public async Task<ActionResult<SchedulePeriod[]>> GetPeriodsByVendorAsync([FromRoute] Guid vendorId)
+        [Route("Vendors/{vendorId}/SchedulePeriods")]
+        public async Task<ActionResult<SchedulePeriod[]>> GetSchedulePeriodsByVendorIdAsync([FromRoute] Guid vendorId)
         {
             var existingVendor = await _vendorsService.GetByIdAsync(vendorId);
             if (existingVendor is null) return NotFound();
@@ -50,7 +50,7 @@ namespace Crowdly_BE.Controllers
 
         [HttpGet]
         [Route("User/SchedulePeriods")]
-        public async Task<ActionResult<SchedulePeriod[]>> GetPeriodsByUserAsync()
+        public async Task<ActionResult<SchedulePeriod[]>> GetUsersSchedulePeriodsAsync()
         {
             var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var periods = await _schedulePeriodsService.GetPeriodsByUserIdAsync(userId);
@@ -59,7 +59,7 @@ namespace Crowdly_BE.Controllers
         }
 
         [HttpDelete]
-        [Route("Vendor/{vendorId}/SchedulePeriods/{periodId}")]
+        [Route("Vendors/{vendorId}/SchedulePeriods/{periodId}")]
         public async Task<ActionResult> DeletePeriodAsVendorAsync([FromRoute] Guid vendorId, [FromRoute] Guid periodId)
         {
             var existingVendor = await _vendorsService.GetByIdAsync(vendorId);
@@ -87,7 +87,7 @@ namespace Crowdly_BE.Controllers
         }
 
         [HttpPost]
-        [Route("Vendor/{vendorId}/SchedulePeriods")]
+        [Route("Vendors/{vendorId}/SchedulePeriods")]
         public async Task<ActionResult<SchedulePeriod>> CreatePeriodAsVendorAsync([FromRoute] Guid vendorId, CreateSchedulePeriodModel createPeriodModel)
         {
             var existingVendor = await _vendorsService.GetByIdAsync(vendorId);
@@ -105,8 +105,8 @@ namespace Crowdly_BE.Controllers
         }
 
         [HttpPost]
-        [Route("Vendor/{vendorId}/Book")]
-        public async Task<ActionResult<SchedulePeriod>> CreatePeriodAsUserAsync([FromRoute] Guid vendorId, CreateSchedulePeriodModel createPeriodModel)
+        [Route("Vendors/{vendorId}/Book")]
+        public async Task<ActionResult<SchedulePeriod>> BookPeriodAsUserAsync([FromRoute] Guid vendorId, CreateSchedulePeriodModel createPeriodModel)
         {
             var existingVendor = await _vendorsService.GetByIdAsync(vendorId);
             if (existingVendor is null) return NotFound();
