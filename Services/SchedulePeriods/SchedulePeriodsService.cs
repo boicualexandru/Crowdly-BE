@@ -60,14 +60,20 @@ namespace Services.SchedulePeriods
 
         public async Task<SchedulePeriod[]> GetPeriodsByUserIdAsync(Guid userId)
         {
-            var dbPeriods = await _dbContext.SchedulePeriods.Where(period => period.BookedByUserId == userId).ToArrayAsync();
+            var dbPeriods = await _dbContext.SchedulePeriods
+                .Where(period => period.BookedByUserId == userId)
+                .OrderByDescending(period => period.StartDate)
+                .ToArrayAsync();
 
             return _mapper.Map<SchedulePeriod[]>(dbPeriods);
         }
 
         public async Task<SchedulePeriod[]> GetPeriodsByVendorIdAsync(Guid vendorId)
         {
-            var dbPeriods = await _dbContext.SchedulePeriods.Where(period => period.VendorId == vendorId).ToArrayAsync();
+            var dbPeriods = await _dbContext.SchedulePeriods
+                .Where(period => period.VendorId == vendorId)
+                .OrderByDescending(period => period.StartDate)
+                .ToArrayAsync();
 
             return _mapper.Map<SchedulePeriod[]>(dbPeriods);
         }
