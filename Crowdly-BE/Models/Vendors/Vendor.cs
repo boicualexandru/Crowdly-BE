@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Crowdly_BE.Models.Vendors
 {
@@ -40,20 +41,28 @@ namespace Crowdly_BE.Models.Vendors
 
     public class CreateVendorModel
     {
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string City { get; set; }
+        [Required]
         public double Price { get; set; }
         public IFormFile[] FormFiles { get; set; }
+        [Required]
         public VendorCategoryType Category { get; set; }
     }
 
     public class UpdateVendorModel
     {
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string City { get; set; }
+        [Required]
         public double Price { get; set; }
         public IFormFile[]? FormFiles { get; set; }
         public string[] ExistingImages { get; set; }
+        [Required]
         public VendorCategoryType Category { get; set; }
     }
 

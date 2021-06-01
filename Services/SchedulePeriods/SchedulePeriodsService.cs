@@ -21,7 +21,7 @@ namespace Services.SchedulePeriods
             _mapper = mapper;
         }
 
-        public async Task<SchedulePeriod> CreatePeriodAsync(CreateSchedulePeriodModel period)
+        public async Task<SchedulePeriod> CreateSchedulePeriodAsync(CreateSchedulePeriodModel period)
         {
             var dbPeriod = _mapper.Map<DataAccess.Models.SchedulePeriod>(period);
             dbPeriod.StartDate = period.StartDate.Date;
@@ -34,7 +34,7 @@ namespace Services.SchedulePeriods
             return _mapper.Map<SchedulePeriod>(dbPeriod);
         }
 
-        public async Task<string[]> DeletePeriodAsUserAsync(Guid userId, Guid periodId)
+        public async Task<string[]> DeleteSchedulePeriodAsUserAsync(Guid userId, Guid periodId)
         {
             var dbPeriod = await _dbContext.SchedulePeriods.FirstOrDefaultAsync(period => period.Id == periodId && period.BookedByUserId == userId);
 
@@ -46,7 +46,7 @@ namespace Services.SchedulePeriods
             return new string[0];
         }
 
-        public async Task<string[]> DeletePeriodAsVendorAsync(Guid vendorId, Guid periodId)
+        public async Task<string[]> DeleteSchedulePeriodAsVendorAsync(Guid vendorId, Guid periodId)
         {
             var dbPeriod = await _dbContext.SchedulePeriods.FirstOrDefaultAsync(period => period.Id == periodId && period.VendorId == vendorId);
 
@@ -58,7 +58,7 @@ namespace Services.SchedulePeriods
             return new string[0];
         }
 
-        public async Task<SchedulePeriod[]> GetPeriodsByUserIdAsync(Guid userId)
+        public async Task<SchedulePeriod[]> GetSchedulePeriodsByUserIdAsync(Guid userId)
         {
             var dbPeriods = await _dbContext.SchedulePeriods
                 .Where(period => period.BookedByUserId == userId)
@@ -68,7 +68,7 @@ namespace Services.SchedulePeriods
             return _mapper.Map<SchedulePeriod[]>(dbPeriods);
         }
 
-        public async Task<SchedulePeriod[]> GetPeriodsByVendorIdAsync(Guid vendorId)
+        public async Task<SchedulePeriod[]> GetSchedulePeriodsByVendorIdAsync(Guid vendorId)
         {
             var dbPeriods = await _dbContext.SchedulePeriods
                 .Where(period => period.VendorId == vendorId)
@@ -76,6 +76,17 @@ namespace Services.SchedulePeriods
                 .ToArrayAsync();
 
             return _mapper.Map<SchedulePeriod[]>(dbPeriods);
+        }
+
+        public async Task<Period[]> GetUnavailablePeriodsByVendorIdAsync(Guid vendorId)
+        {
+            var dbPeriods = await _dbContext.SchedulePeriods
+                .Where(period => period.VendorId == vendorId)
+                .OrderBy(period => period.StartDate)
+                .Select(period => new Period { StartDate = period.StartDate, EndDate = period.EndDate })
+                .ToArrayAsync();
+
+            return dbPeriods;
         }
     }
 }

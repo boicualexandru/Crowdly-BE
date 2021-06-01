@@ -7,6 +7,7 @@ namespace Crowdly_BE.Models.SchedulePeriods
         public SchedulePeriodProfile()
         {
             CreateMap<Services.SchedulePeriods.Models.SchedulePeriod, SchedulePeriod>();
+            CreateMap<Services.SchedulePeriods.Models.Period, Period>();
 
             CreateMap<CreateSchedulePeriodModel, Services.SchedulePeriods.Models.CreateSchedulePeriodModel>()
                 .ForMember(dest => dest.VendorId, opt => opt.Ignore())
