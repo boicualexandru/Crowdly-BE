@@ -20,6 +20,7 @@ namespace Crowdly_BE.Models.Vendors
         public VendorCategoryType Category { get; set; }
         public double? PriceMin { get; set; }
         public double? PriceMax { get; set; }
+        public int? Guests { get; set; }
         public int? Skip { get; set; }
     }
 
@@ -34,6 +35,8 @@ namespace Crowdly_BE.Models.Vendors
         public string Email { get; set; }
         public string Description { get; set; }
         public double Price { get; set; }
+        public int? GuestsMin { get; set; }
+        public int? GuestsMax { get; set; }
         public string[] Images { get; set; }
         public bool IsEditable { get; set; }
         public VendorCategoryType Category { get; set; }
@@ -47,6 +50,8 @@ namespace Crowdly_BE.Models.Vendors
         public string City { get; set; }
         [Required]
         public double Price { get; set; }
+        public int? GuestsMin { get; set; }
+        public int? GuestsMax { get; set; }
         public IFormFile[] FormFiles { get; set; }
         [Required]
         public VendorCategoryType Category { get; set; }
@@ -60,6 +65,8 @@ namespace Crowdly_BE.Models.Vendors
         public string City { get; set; }
         [Required]
         public double Price { get; set; }
+        public int? GuestsMin { get; set; }
+        public int? GuestsMax { get; set; }
         public IFormFile[]? FormFiles { get; set; }
         public string[] ExistingImages { get; set; }
         [Required]

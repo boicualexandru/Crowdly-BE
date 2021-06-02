@@ -13,6 +13,8 @@ namespace Services.Vendors.Models
         public string Email { get; set; }
         public string Description { get; set; }
         public double Price { get; set; }
+        public int? GuestsMin { get; set; }
+        public int? GuestsMax { get; set; }
         public string[] Images { get; set; }
         public Guid CreatedByUserId { get; set; }
         public VendorCategoryType Category { get; set; }

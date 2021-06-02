@@ -12,6 +12,7 @@ namespace Services.Vendors.Models
         public VendorCategoryType Category { get; set; }
         public double? PriceMin { get; set; }
         public double? PriceMax { get; set; }
+        public int? Guests { get; set; }
         public int? Skip { get; set; }
     }
 }
