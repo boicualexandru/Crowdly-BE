@@ -13,6 +13,8 @@ namespace Services.Vendors.Models
         public double? PriceMin { get; set; }
         public double? PriceMax { get; set; }
         public int? Guests { get; set; }
+        public DateTime? PeriodStart { get; set; }
+        public DateTime? PeriodEnd { get; set; }
         public int? Skip { get; set; }
     }
 }

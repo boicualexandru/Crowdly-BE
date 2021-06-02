@@ -53,6 +53,16 @@ namespace Services.Vendors
             if (filters.Guests.HasValue)
                 dbVendorsQuery = dbVendorsQuery.Where(vendor => (!vendor.GuestsMin.HasValue || vendor.GuestsMin <= filters.Guests) && (!vendor.GuestsMax.HasValue || vendor.GuestsMax >= filters.Guests));
 
+            if (filters.PeriodStart.HasValue)
+            {
+                var isSingleDay = !filters.PeriodEnd.HasValue;
+
+                if (isSingleDay)
+                    dbVendorsQuery = dbVendorsQuery.Where(vendor => !vendor.SchedulePeriods.Any(sp => sp.StartDate <= filters.PeriodStart && sp.EndDate >= filters.PeriodStart));
+                else
+                    dbVendorsQuery = dbVendorsQuery.Where(vendor => !vendor.SchedulePeriods.Any(sp => sp.StartDate <= filters.PeriodEnd && sp.EndDate >= filters.PeriodStart));
+            }
+
             if (filters.Skip > 0)
                 dbVendorsQuery = dbVendorsQuery.Skip(filters.Skip.Value);
 
