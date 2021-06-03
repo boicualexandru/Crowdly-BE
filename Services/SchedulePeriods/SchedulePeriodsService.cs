@@ -23,15 +23,24 @@ namespace Services.SchedulePeriods
 
         public async Task<SchedulePeriod> CreateSchedulePeriodAsync(CreateSchedulePeriodModel period)
         {
-            var dbPeriod = _mapper.Map<DataAccess.Models.SchedulePeriod>(period);
-            dbPeriod.StartDate = period.StartDate.Date;
-            dbPeriod.EndDate = period.EndDate.Date;
-            dbPeriod.CreatedAt = DateTime.Now;
+            var now = DateTime.Now;
+            var dbPeriod = ConvertToDbSchedulePeriod(period, now);
 
             _dbContext.SchedulePeriods.Add(dbPeriod);
             await _dbContext.SaveChangesAsync();
 
             return _mapper.Map<SchedulePeriod>(dbPeriod);
+        }
+
+        public async Task<SchedulePeriod[]> CreateMultipleSchedulePeriodsAsync(CreateSchedulePeriodModel[] periods)
+        {
+            var now = DateTime.Now;
+            var dbPeriods = periods.Select(period => ConvertToDbSchedulePeriod(period, now)).ToArray();
+
+            _dbContext.SchedulePeriods.AddRange(dbPeriods);
+            await _dbContext.SaveChangesAsync();
+
+            return _mapper.Map<SchedulePeriod[]>(dbPeriods);
         }
 
         public async Task<string[]> DeleteSchedulePeriodAsUserAsync(Guid userId, Guid periodId)
@@ -87,6 +96,16 @@ namespace Services.SchedulePeriods
                 .ToArrayAsync();
 
             return dbPeriods;
+        }
+
+        private DataAccess.Models.SchedulePeriod ConvertToDbSchedulePeriod(CreateSchedulePeriodModel period, DateTime createdAt)
+        {
+            var dbPeriod = _mapper.Map<DataAccess.Models.SchedulePeriod>(period);
+            dbPeriod.StartDate = period.StartDate.Date;
+            dbPeriod.EndDate = period.EndDate.Date;
+            dbPeriod.CreatedAt = createdAt;
+
+            return dbPeriod;
         }
     }
 }

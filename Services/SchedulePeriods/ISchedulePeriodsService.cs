@@ -13,6 +13,7 @@ namespace Services.SchedulePeriods
         Task<Period[]> GetUnavailablePeriodsByVendorIdAsync(Guid vendorId);
         Task<SchedulePeriod[]> GetSchedulePeriodsByUserIdAsync(Guid userId);
         Task<SchedulePeriod> CreateSchedulePeriodAsync(CreateSchedulePeriodModel period);
+        Task<SchedulePeriod[]> CreateMultipleSchedulePeriodsAsync(CreateSchedulePeriodModel[] periods);
         Task<string[]> DeleteSchedulePeriodAsVendorAsync(Guid vendorId, Guid periodId);
         Task<string[]> DeleteSchedulePeriodAsUserAsync(Guid userId, Guid periodId);
     }
