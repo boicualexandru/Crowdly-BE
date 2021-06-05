@@ -87,6 +87,13 @@ namespace Services.Authentication
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
+            if (user.FirstName is not null)
+                authClaims.Add(new Claim("firstName", user.FirstName));
+            if (user.FirstName is not null)
+                authClaims.Add(new Claim("lastName", user.LastName));
+            if (user.FirstName is not null)
+                authClaims.Add(new Claim("image", user.Image));
+
             foreach (var userRole in userRoles)
             {
                 authClaims.Add(new Claim(ClaimTypes.Role, userRole));
@@ -97,7 +104,7 @@ namespace Services.Authentication
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddHours(8),
+                expires: DateTime.Now.AddDays(100),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );
