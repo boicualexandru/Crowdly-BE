@@ -78,6 +78,96 @@ namespace Services.Authentication
             };
         }
 
+        public async Task<LoginResponse> UpdateUserAsync(Guid userId, UpdateUserModel updateUser)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user is null)
+                return new LoginResponse
+                {
+                    ErrorMessages = new string[] { "User not existent" }
+                };
+
+            user.Email = updateUser.Email;
+            user.FirstName = updateUser.FirstName;
+            user.LastName = updateUser.LastName;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Errors.Any())
+                return new LoginResponse
+                {
+                    ErrorMessages = result.Errors.Select(err => err.Description).ToArray()
+                };
+
+
+            JwtSecurityToken token = await CreateAuthTokenAsync(user);
+
+            return new LoginResponse
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                ValidTo = token.ValidTo,
+                ErrorMessages = new string[0]
+            };
+        }
+
+        public async Task<LoginResponse> ChangePasswordAsync(Guid userId, ChangePasswordModel changePassword)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user is null)
+                return new LoginResponse
+                {
+                    ErrorMessages = new string[] { "User not existent" }
+                };
+
+            var result = await _userManager.ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
+
+            if (result.Errors.Any())
+                return new LoginResponse
+                {
+                    ErrorMessages = result.Errors.Select(err => err.Description).ToArray()
+                };
+
+
+            JwtSecurityToken token = await CreateAuthTokenAsync(user);
+
+            return new LoginResponse
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                ValidTo = token.ValidTo,
+                ErrorMessages = new string[0]
+            };
+        }
+
+        public async Task<LoginResponse> UpdateAvatarAsync(Guid userId, string imageName)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user is null)
+                return new LoginResponse
+                {
+                    ErrorMessages = new string[] { "User not existent" }
+                };
+
+            user.Image = imageName;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Errors.Any())
+                return new LoginResponse
+                {
+                    ErrorMessages = result.Errors.Select(err => err.Description).ToArray()
+                };
+
+
+            JwtSecurityToken token = await CreateAuthTokenAsync(user);
+
+            return new LoginResponse
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                ValidTo = token.ValidTo,
+                ErrorMessages = new string[0]
+            };
+        }
+
         private async Task<JwtSecurityToken> CreateAuthTokenAsync(ApplicationUser user)
         {
             var userRoles = await _userManager.GetRolesAsync(user);

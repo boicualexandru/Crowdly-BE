@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <Folder Include="ActionFilters\" />
-    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\users\" />
   </ItemGroup>
 
 </Project>
