@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Authentication\Mappers\" />
+    <Folder Include="User\Mappers\" />
   </ItemGroup>
 
 </Project>

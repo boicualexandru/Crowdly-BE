@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Services.Authentication.Models
+namespace Services.User.Models
 {
     public class LoginResponse
     {

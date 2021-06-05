@@ -4,14 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Crowdly_BE.Models.Authentication
+namespace Services.User.Models
 {
     public class ChangePasswordModel
     {
-        [Required]
         public string OldPassword { get; set; }
-
-        [Required]
         public string NewPassword { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Services.Authentication.Models
+namespace Services.User.Models
 {
     public class UpdateUserModel
     {

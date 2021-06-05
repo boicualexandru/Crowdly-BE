@@ -14,7 +14,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Services.Authentication;
+using Services.User;
 using Services.SchedulePeriods;
 using Services.Vendors;
 using System;
@@ -104,7 +104,7 @@ namespace Crowdly_BE
             });
 
             // Services DI
-            services.AddTransient<IAuthenticationService, AuthenticationService>();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<IVendorsService, VendorsService>();
             services.AddTransient<ISchedulePeriodsService, SchedulePeriodsService>();
         }

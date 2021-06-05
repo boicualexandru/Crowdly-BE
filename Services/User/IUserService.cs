@@ -1,10 +1,10 @@
-﻿using Services.Authentication.Models;
+﻿using Services.User.Models;
 using System;
 using System.Threading.Tasks;
 
-namespace Services.Authentication
+namespace Services.User
 {
-    public interface IAuthenticationService
+    public interface IUserService
     {
         Task<LoginResponse> LoginAsync(LoginModel loginModel);
         Task<LoginResponse> RegisterAsync(RegisterModel registerModel);

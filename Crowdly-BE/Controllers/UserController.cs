@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Crowdly_BE.Models.Authentication;
+using Crowdly_BE.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Services.Authentication;
+using Services.User;
 using System;
 using System.IO;
 using System.Linq;
@@ -14,14 +14,14 @@ namespace Crowdly_BE.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AuthenticateController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly IAuthenticationService _authenticationService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public AuthenticateController(IAuthenticationService authenticationService, IMapper mapper)
+        public UserController(IUserService userService, IMapper mapper)
         {
-            _authenticationService = authenticationService;
+            _userService = userService;
             _mapper = mapper;
         }
 
@@ -29,7 +29,7 @@ namespace Crowdly_BE.Controllers
         [Route("login")]
         public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginModel model)
         {
-            var loginResponse = await _authenticationService.LoginAsync(_mapper.Map<Services.Authentication.Models.LoginModel>(model));
+            var loginResponse = await _userService.LoginAsync(_mapper.Map<Services.User.Models.LoginModel>(model));
 
             if (loginResponse.ErrorMessages.Any())
                 return BadRequest(loginResponse.ErrorMessages);
@@ -41,7 +41,7 @@ namespace Crowdly_BE.Controllers
         [Route("register")]
         public async Task<ActionResult<LoginResponse>> Register([FromBody] RegisterModel model)
         {
-            var registerResponse = await _authenticationService.RegisterAsync(_mapper.Map<Services.Authentication.Models.RegisterModel>(model));
+            var registerResponse = await _userService.RegisterAsync(_mapper.Map<Services.User.Models.RegisterModel>(model));
 
             if (registerResponse.ErrorMessages.Any())
                 return BadRequest(registerResponse.ErrorMessages);
@@ -55,7 +55,7 @@ namespace Crowdly_BE.Controllers
         public async Task<ActionResult<LoginResponse>> UpdateUser([FromBody] UpdateUserModel updateUser)
         {
             var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var response = await _authenticationService.UpdateUserAsync(userId, _mapper.Map<Services.Authentication.Models.UpdateUserModel>(updateUser));
+            var response = await _userService.UpdateUserAsync(userId, _mapper.Map<Services.User.Models.UpdateUserModel>(updateUser));
 
             if (response.ErrorMessages.Any())
                 return BadRequest(response.ErrorMessages);
@@ -70,7 +70,7 @@ namespace Crowdly_BE.Controllers
         public async Task<ActionResult<LoginResponse>> ChangePassword([FromBody] ChangePasswordModel changePassword)
         {
             var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var response = await _authenticationService.ChangePasswordAsync(userId, _mapper.Map<Services.Authentication.Models.ChangePasswordModel>(changePassword));
+            var response = await _userService.ChangePasswordAsync(userId, _mapper.Map<Services.User.Models.ChangePasswordModel>(changePassword));
 
             if (response.ErrorMessages.Any())
                 return BadRequest(response.ErrorMessages);
@@ -89,12 +89,13 @@ namespace Crowdly_BE.Controllers
 
             var imageName = UploadImage(userId, uploadAvatar.FormFile);
 
-            var response = await _authenticationService.UpdateAvatarAsync(userId, imageName);
+            var response = await _userService.UpdateAvatarAsync(userId, imageName);
 
             if (response.ErrorMessages.Any())
                 return BadRequest(response.ErrorMessages);
 
-            DeleteImages(userId, oldAvatarImage);
+            if(oldAvatarImage is not null)
+                DeleteImages(userId, oldAvatarImage);
 
             return _mapper.Map<LoginResponse>(response);
 
