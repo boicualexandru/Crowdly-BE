@@ -26,11 +26,11 @@ namespace Services.Authentication
 
         public async Task<LoginResponse> LoginAsync(LoginModel loginModel)
         {
-            var user = await _userManager.FindByNameAsync(loginModel.Username);
+            var user = await _userManager.FindByEmailAsync(loginModel.Email);
             if (user is null || !(await _userManager.CheckPasswordAsync(user, loginModel.Password)))
                 return new LoginResponse
                 {
-                    ErrorMessages = new string[] { "Username or Password incorrect." }
+                    ErrorMessages = new string[] { "Email or Password incorrect." }
                 };
 
             JwtSecurityToken token = await CreateAuthTokenAsync(user);
@@ -45,7 +45,7 @@ namespace Services.Authentication
 
         public async Task<LoginResponse> RegisterAsync(RegisterModel registerModel)
         {
-            var userExists = await _userManager.FindByNameAsync(registerModel.Username);
+            var userExists = await _userManager.FindByEmailAsync(registerModel.Email);
             if (userExists != null)
                 return new LoginResponse
                 {
@@ -55,8 +55,10 @@ namespace Services.Authentication
             ApplicationUser user = new ApplicationUser()
             {
                 Email = registerModel.Email,
+                UserName = registerModel.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = registerModel.Username
+                FirstName = registerModel.FirstName,
+                LastName = registerModel.LastName,
             };
 
             var result = await _userManager.CreateAsync(user, registerModel.Password);
@@ -83,15 +85,15 @@ namespace Services.Authentication
             var authClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
             if (user.FirstName is not null)
                 authClaims.Add(new Claim("firstName", user.FirstName));
-            if (user.FirstName is not null)
+            if (user.LastName is not null)
                 authClaims.Add(new Claim("lastName", user.LastName));
-            if (user.FirstName is not null)
+            if (user.Image is not null)
                 authClaims.Add(new Claim("image", user.Image));
 
             foreach (var userRole in userRoles)
