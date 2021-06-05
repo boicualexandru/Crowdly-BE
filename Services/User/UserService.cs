@@ -59,6 +59,7 @@ namespace Services.User
                 SecurityStamp = Guid.NewGuid().ToString(),
                 FirstName = registerModel.FirstName,
                 LastName = registerModel.LastName,
+                PhoneNumber = registerModel.PhoneNumber,
             };
 
             var result = await _userManager.CreateAsync(user, registerModel.Password);
@@ -90,6 +91,7 @@ namespace Services.User
             user.Email = updateUser.Email;
             user.FirstName = updateUser.FirstName;
             user.LastName = updateUser.LastName;
+            user.PhoneNumber = updateUser.PhoneNumber;
 
             var result = await _userManager.UpdateAsync(user);
 
@@ -183,6 +185,8 @@ namespace Services.User
                 authClaims.Add(new Claim("firstName", user.FirstName));
             if (user.LastName is not null)
                 authClaims.Add(new Claim("lastName", user.LastName));
+            if (user.PhoneNumber is not null)
+                authClaims.Add(new Claim(ClaimTypes.OtherPhone, user.PhoneNumber));
             if (user.Image is not null)
                 authClaims.Add(new Claim("image", user.Image));
 

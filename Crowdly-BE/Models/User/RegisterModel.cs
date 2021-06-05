@@ -18,6 +18,8 @@ namespace Crowdly_BE.Models.User
         [Required(ErrorMessage = "LastName is required")]
         public string LastName { get; set; }
 
+        public string PhoneNumber { get; set; }
+
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
     }

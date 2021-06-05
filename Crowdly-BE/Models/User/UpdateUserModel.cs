@@ -16,5 +16,7 @@ namespace Crowdly_BE.Models.User
 
         [Required]
         public string LastName { get; set; }
+
+        public string PhoneNumber { get; set; }
     }
 }
