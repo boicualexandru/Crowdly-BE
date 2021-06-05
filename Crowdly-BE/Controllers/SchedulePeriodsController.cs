@@ -34,7 +34,7 @@ namespace Crowdly_BE.Controllers
 
         [HttpGet]
         [Route("Vendors/{vendorId}/SchedulePeriods")]
-        public async Task<ActionResult<VendorSchedulePeriod[]>> GetSchedulePeriodsByVendorIdAsync([FromRoute] Guid vendorId)
+        public async Task<ActionResult<VendorSchedulePeriod[]>> GetSchedulePeriodsByVendorIdAsync([FromRoute] Guid vendorId, [FromQuery] bool? showPast)
         {
             var existingVendor = await _vendorsService.GetByIdAsync(vendorId);
             if (existingVendor is null) return NotFound();
@@ -43,7 +43,7 @@ namespace Crowdly_BE.Controllers
                 .AuthorizeAsync(User, existingVendor, VendorOperations.Update);
             if (!authorizationResult.Succeeded) return Unauthorized();
 
-            var periods = await _schedulePeriodsService.GetSchedulePeriodsByVendorIdAsync(vendorId);
+            var periods = await _schedulePeriodsService.GetSchedulePeriodsByVendorIdAsync(vendorId, showPast);
 
             return Ok(_mapper.Map<VendorSchedulePeriod[]>(periods));
         }
@@ -62,10 +62,10 @@ namespace Crowdly_BE.Controllers
 
         [HttpGet]
         [Route("User/SchedulePeriods")]
-        public async Task<ActionResult<UserSchedulePeriod[]>> GetUsersSchedulePeriodsAsync()
+        public async Task<ActionResult<UserSchedulePeriod[]>> GetUsersSchedulePeriodsAsync([FromQuery] bool? showPast)
         {
             var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var periods = await _schedulePeriodsService.GetSchedulePeriodsByUserIdAsync(userId);
+            var periods = await _schedulePeriodsService.GetSchedulePeriodsByUserIdAsync(userId, showPast);
 
             return Ok(_mapper.Map<UserSchedulePeriod[]>(periods));
         }

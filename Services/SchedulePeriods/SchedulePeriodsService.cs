@@ -67,24 +67,40 @@ namespace Services.SchedulePeriods
             return new string[0];
         }
 
-        public async Task<UserSchedulePeriod[]> GetSchedulePeriodsByUserIdAsync(Guid userId)
+        public async Task<UserSchedulePeriod[]> GetSchedulePeriodsByUserIdAsync(Guid userId, bool? showPast)
         {
-            var dbPeriods = await _dbContext.SchedulePeriods
+            var dbPeriodsQuery = _dbContext.SchedulePeriods
                 .Include(period => period.Vendor)
-                .Where(period => period.BookedByUserId == userId)
-                .OrderByDescending(period => period.StartDate)
-                .ToArrayAsync();
+                .Where(period => period.BookedByUserId == userId);
+
+            if (showPast != true)
+            {
+                var today = DateTime.Now.Date;
+                dbPeriodsQuery = dbPeriodsQuery.Where(period => period.EndDate >= today);
+            }
+
+            dbPeriodsQuery = dbPeriodsQuery.OrderBy(period => period.StartDate);
+
+            var dbPeriods = await dbPeriodsQuery.ToArrayAsync();
 
             return _mapper.Map<UserSchedulePeriod[]>(dbPeriods);
         }
 
-        public async Task<VendorSchedulePeriod[]> GetSchedulePeriodsByVendorIdAsync(Guid vendorId)
+        public async Task<VendorSchedulePeriod[]> GetSchedulePeriodsByVendorIdAsync(Guid vendorId, bool? showPast)
         {
-            var dbPeriods = await _dbContext.SchedulePeriods
+            var dbPeriodsQuery = _dbContext.SchedulePeriods
                 .Include(period => period.BookedByUser)
-                .Where(period => period.VendorId == vendorId)
-                .OrderByDescending(period => period.StartDate)
-                .ToArrayAsync();
+                .Where(period => period.VendorId == vendorId);
+
+            if (showPast != true)
+            {
+                var today = DateTime.Now.Date;
+                dbPeriodsQuery = dbPeriodsQuery.Where(period => period.EndDate >= today);
+            }
+
+            dbPeriodsQuery = dbPeriodsQuery.OrderBy(period => period.StartDate);
+
+            var dbPeriods = await dbPeriodsQuery.ToArrayAsync();
 
             return _mapper.Map<VendorSchedulePeriod[]>(dbPeriods);
         }
