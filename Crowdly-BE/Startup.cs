@@ -78,6 +78,7 @@ namespace Crowdly_BE
 
             services.AddSwaggerGen(swagger =>
             {
+                swagger.CustomSchemaIds(type => type.ToString());
                 //This is to generate the Default UI of Swagger Documentation 
                 swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "Crowdly_BE", Version = "v1" });
                 // To Enable authorization using Swagger (JWT)    

@@ -9,11 +9,11 @@ namespace Services.SchedulePeriods
 {
     public interface ISchedulePeriodsService
     {
-        Task<SchedulePeriod[]> GetSchedulePeriodsByVendorIdAsync(Guid vendorId);
+        Task<VendorSchedulePeriod[]> GetSchedulePeriodsByVendorIdAsync(Guid vendorId);
         Task<Period[]> GetUnavailablePeriodsByVendorIdAsync(Guid vendorId);
-        Task<SchedulePeriod[]> GetSchedulePeriodsByUserIdAsync(Guid userId);
-        Task<SchedulePeriod> CreateSchedulePeriodAsync(CreateSchedulePeriodModel period);
-        Task<SchedulePeriod[]> CreateMultipleSchedulePeriodsAsync(CreateSchedulePeriodModel[] periods);
+        Task<UserSchedulePeriod[]> GetSchedulePeriodsByUserIdAsync(Guid userId);
+        Task<Guid> CreateSchedulePeriodAsync(CreateSchedulePeriodModel period);
+        Task<Guid[]> CreateMultipleSchedulePeriodsAsync(CreateSchedulePeriodModel[] periods);
         Task<string[]> DeleteSchedulePeriodAsVendorAsync(Guid vendorId, Guid periodId);
         Task<string[]> DeleteSchedulePeriodAsUserAsync(Guid userId, Guid periodId);
     }

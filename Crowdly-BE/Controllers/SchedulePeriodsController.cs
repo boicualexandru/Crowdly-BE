@@ -34,7 +34,7 @@ namespace Crowdly_BE.Controllers
 
         [HttpGet]
         [Route("Vendors/{vendorId}/SchedulePeriods")]
-        public async Task<ActionResult<SchedulePeriod[]>> GetSchedulePeriodsByVendorIdAsync([FromRoute] Guid vendorId)
+        public async Task<ActionResult<VendorSchedulePeriod[]>> GetSchedulePeriodsByVendorIdAsync([FromRoute] Guid vendorId)
         {
             var existingVendor = await _vendorsService.GetByIdAsync(vendorId);
             if (existingVendor is null) return NotFound();
@@ -45,7 +45,7 @@ namespace Crowdly_BE.Controllers
 
             var periods = await _schedulePeriodsService.GetSchedulePeriodsByVendorIdAsync(vendorId);
 
-            return Ok(_mapper.Map<SchedulePeriod[]>(periods));
+            return Ok(_mapper.Map<VendorSchedulePeriod[]>(periods));
         }
 
         [HttpGet]
@@ -62,12 +62,12 @@ namespace Crowdly_BE.Controllers
 
         [HttpGet]
         [Route("User/SchedulePeriods")]
-        public async Task<ActionResult<SchedulePeriod[]>> GetUsersSchedulePeriodsAsync()
+        public async Task<ActionResult<UserSchedulePeriod[]>> GetUsersSchedulePeriodsAsync()
         {
             var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var periods = await _schedulePeriodsService.GetSchedulePeriodsByUserIdAsync(userId);
 
-            return Ok(_mapper.Map<SchedulePeriod[]>(periods));
+            return Ok(_mapper.Map<UserSchedulePeriod[]>(periods));
         }
 
         [HttpDelete]
@@ -100,7 +100,7 @@ namespace Crowdly_BE.Controllers
 
         [HttpPost]
         [Route("Vendors/{vendorId}/SchedulePeriods")]
-        public async Task<ActionResult<SchedulePeriod>> CreateSchedulePeriodAsVendorAsync([FromRoute] Guid vendorId, CreateSchedulePeriodModel createPeriodModel)
+        public async Task<ActionResult<Guid>> CreateSchedulePeriodAsVendorAsync([FromRoute] Guid vendorId, CreateSchedulePeriodModel createPeriodModel)
         {
             var existingVendor = await _vendorsService.GetByIdAsync(vendorId);
             if (existingVendor is null) return NotFound();
@@ -111,14 +111,14 @@ namespace Crowdly_BE.Controllers
 
             var createPeriodServiceModel = _mapper.Map<Services.SchedulePeriods.Models.CreateSchedulePeriodModel>(createPeriodModel);
             createPeriodServiceModel.VendorId = vendorId;
-            var createdPeriod = await _schedulePeriodsService.CreateSchedulePeriodAsync(createPeriodServiceModel);
+            var createdPeriodId = await _schedulePeriodsService.CreateSchedulePeriodAsync(createPeriodServiceModel);
 
-            return Ok(_mapper.Map<SchedulePeriod>(createdPeriod));
+            return Ok(createdPeriodId);
         }
 
         [HttpPost]
         [Route("Vendors/{vendorId}/Book")]
-        public async Task<ActionResult<SchedulePeriod>> BookSchedulePeriodAsUserAsync([FromRoute] Guid vendorId, CreateSchedulePeriodModel createPeriodModel)
+        public async Task<ActionResult<Guid>> BookSchedulePeriodAsUserAsync([FromRoute] Guid vendorId, CreateSchedulePeriodModel createPeriodModel)
         {
             var existingVendor = await _vendorsService.GetByIdAsync(vendorId);
             if (existingVendor is null) return NotFound();
@@ -128,9 +128,9 @@ namespace Crowdly_BE.Controllers
             var createPeriodServiceModel = _mapper.Map<Services.SchedulePeriods.Models.CreateSchedulePeriodModel>(createPeriodModel);
             createPeriodServiceModel.VendorId = vendorId;
             createPeriodServiceModel.BookedByUserId = userId;
-            var createdPeriod = await _schedulePeriodsService.CreateSchedulePeriodAsync(createPeriodServiceModel);
+            var createdPeriodId = await _schedulePeriodsService.CreateSchedulePeriodAsync(createPeriodServiceModel);
 
-            return Ok(_mapper.Map<SchedulePeriod>(createdPeriod));
+            return Ok(createdPeriodId);
         }
     }
 }

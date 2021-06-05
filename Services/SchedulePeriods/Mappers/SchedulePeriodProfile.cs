@@ -12,7 +12,10 @@ namespace Services.SchedulePeriods.Mappers
     {
         public SchedulePeriodProfile()
         {
-            CreateMap<DataAccess.Models.SchedulePeriod, SchedulePeriod>();
+            CreateMap<DataAccess.Models.SchedulePeriod, VendorSchedulePeriod>();
+            CreateMap<DataAccess.Models.SchedulePeriod, UserSchedulePeriod>();
+            CreateMap<DataAccess.Models.ApplicationUser, UserDetails>();
+            CreateMap<DataAccess.Models.Vendor, VendorDetails>();
 
             CreateMap<CreateSchedulePeriodModel, DataAccess.Models.SchedulePeriod>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())

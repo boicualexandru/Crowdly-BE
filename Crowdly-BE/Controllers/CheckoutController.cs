@@ -30,7 +30,7 @@ namespace Crowdly_BE.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<SchedulePeriod[]>> ConfirmCheckout(ConfirmCheckoutModel checkoutModel)
+        public async Task<ActionResult<Guid[]>> ConfirmCheckout(ConfirmCheckoutModel checkoutModel)
         {
             var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
@@ -42,9 +42,9 @@ namespace Crowdly_BE.Controllers
                 BookedByUserId = userId
             }).ToArray();
 
-            var createdPeriods = await _schedulePeriodsService.CreateMultipleSchedulePeriodsAsync(periods);
+            var createdPeriodIds = await _schedulePeriodsService.CreateMultipleSchedulePeriodsAsync(periods);
 
-            return Ok(_mapper.Map<SchedulePeriod[]>(createdPeriods));
+            return Ok(createdPeriodIds);
         }
     }
 }

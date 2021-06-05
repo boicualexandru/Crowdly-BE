@@ -6,7 +6,10 @@ namespace Crowdly_BE.Models.SchedulePeriods
     {
         public SchedulePeriodProfile()
         {
-            CreateMap<Services.SchedulePeriods.Models.SchedulePeriod, SchedulePeriod>();
+            CreateMap<Services.SchedulePeriods.Models.VendorSchedulePeriod, VendorSchedulePeriod>();
+            CreateMap<Services.SchedulePeriods.Models.UserSchedulePeriod, UserSchedulePeriod>();
+            CreateMap<Services.SchedulePeriods.Models.VendorDetails, VendorDetails>();
+            CreateMap<Services.SchedulePeriods.Models.UserDetails, UserDetails>();
             CreateMap<Services.SchedulePeriods.Models.Period, Period>();
 
             CreateMap<CreateSchedulePeriodModel, Services.SchedulePeriods.Models.CreateSchedulePeriodModel>()
