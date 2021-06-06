@@ -30,7 +30,7 @@ namespace Services.User
             if (user is null || !(await _userManager.CheckPasswordAsync(user, loginModel.Password)))
                 return new LoginResponse
                 {
-                    ErrorMessages = new string[] { "Email or Password incorrect." }
+                    ErrorMessages = new string[] { "Email sau Parola incorecte." }
                 };
 
             JwtSecurityToken token = await CreateAuthTokenAsync(user);
@@ -49,7 +49,7 @@ namespace Services.User
             if (userExists != null)
                 return new LoginResponse
                 {
-                    ErrorMessages = new string[] { "User already exists." }
+                    ErrorMessages = new string[] { "Aceasta adresa de email a fost deja inregistrata" }
                 };
 
             ApplicationUser user = new ApplicationUser()
