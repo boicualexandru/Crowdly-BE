@@ -11,15 +11,15 @@ namespace Crowdly_BE.Models.Events
     {
         public EventProfile()
         {
-            CreateMap<Services.Vendors.Models.Vendor, Event>();
-            CreateMap<Services.Common.Models.DataPage<Services.Vendors.Models.Vendor>, DataPage<Event>>();
-            CreateMap<EventsFilters, Services.Vendors.Models.VendorsFilters>();
+            CreateMap<Services.Events.Models.Event, Event>();
+            CreateMap<Services.Common.Models.DataPage<Services.Events.Models.Event>, DataPage<Event>>();
+            CreateMap<EventsFilters, Services.Events.Models.EventsFilters>();
 
-            CreateMap<Services.Vendors.Models.VendorDetails, EventDetails>();
+            CreateMap<Services.Events.Models.EventDetails, EventDetails>();
 
-            CreateMap<CreateEventModel, Services.Vendors.Models.CreateVendorModel>()
+            CreateMap<CreateEventModel, Services.Events.Models.CreateEventModel>()
                 .ForMember(dest => dest.Images, opt => opt.Ignore());
-            CreateMap<UpdateEventModel, Services.Vendors.Models.UpdateVendorModel>()
+            CreateMap<UpdateEventModel, Services.Events.Models.UpdateEventModel>()
                 .ForMember(dest => dest.Images, opt => opt.Ignore());
         }
     }

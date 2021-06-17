@@ -12,7 +12,8 @@ namespace Services.Events.Mappers
     {
         public EventProfile()
         {
-            CreateMap<DataAccess.Models.Event, Event>();
+            CreateMap<DataAccess.Models.Event, Event>()
+                .ForMember(dest => dest.Thumbnail, opt => opt.MapFrom(source => source.Images.FirstOrDefault()));
             CreateMap<EventCategoryType, DataAccess.Models.EventCategoryType>();
 
             CreateMap<DataAccess.Models.Event, EventDetails>();
