@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
+using Services.Common.Models;
 using Services.Vendors.Models;
 using System;
 using System.Linq;

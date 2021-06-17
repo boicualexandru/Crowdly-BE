@@ -1,4 +1,5 @@
-﻿using Services.Vendors.Models;
+﻿using Services.Common.Models;
+using Services.Vendors.Models;
 using System;
 using System.Threading.Tasks;
 

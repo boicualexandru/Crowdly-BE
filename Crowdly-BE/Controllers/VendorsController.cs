@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Crowdly_BE.Authorization;
+using Crowdly_BE.Models.Common;
 using Crowdly_BE.Models.Vendors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

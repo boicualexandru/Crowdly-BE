@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Crowdly_BE.Models.Common;
 
 namespace Crowdly_BE.Models.Vendors
 {
@@ -7,7 +8,7 @@ namespace Crowdly_BE.Models.Vendors
         public VendorProfile()
         {
             CreateMap<Services.Vendors.Models.Vendor, Vendor>();
-            CreateMap<Services.Vendors.Models.DataPage<Services.Vendors.Models.Vendor>, DataPage<Vendor>>();
+            CreateMap<Services.Common.Models.DataPage<Services.Vendors.Models.Vendor>, DataPage<Vendor>>();
             CreateMap<VendorsFilters, Services.Vendors.Models.VendorsFilters>();
 
             CreateMap<Services.Vendors.Models.VendorDetails, VendorDetails>();

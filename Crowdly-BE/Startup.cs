@@ -21,6 +21,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Services.Events;
 
 namespace Crowdly_BE
 {
@@ -75,6 +76,7 @@ namespace Crowdly_BE
 
             // Adding Authorization
             services.AddSingleton<IAuthorizationHandler, VendorAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler, EventAuthorizationHandler>();
 
             services.AddSwaggerGen(swagger =>
             {
@@ -108,6 +110,7 @@ namespace Crowdly_BE
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IVendorsService, VendorsService>();
             services.AddTransient<ISchedulePeriodsService, SchedulePeriodsService>();
+            services.AddTransient<IEventsService, EventsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

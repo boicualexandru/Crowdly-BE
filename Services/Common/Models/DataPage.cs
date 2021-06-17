@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace Crowdly_BE.Models.Vendors
+namespace Services.Common.Models
 {
     public class DataPage<T>
     {
