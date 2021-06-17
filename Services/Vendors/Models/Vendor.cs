@@ -21,5 +21,8 @@ namespace Services.Vendors.Models
         Photo = 3,
         Video = 4,
         Food = 5,
+        Entertainment = 6,
+        Decoration = 7,
+        Flowers = 8,
     }
 }
