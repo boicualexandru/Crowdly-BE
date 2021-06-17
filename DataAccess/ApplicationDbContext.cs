@@ -15,5 +15,6 @@ namespace DataAccess
 
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<SchedulePeriod> SchedulePeriods { get; set; }
+        public DbSet<Event> Events { get; set; }
     }
 }
