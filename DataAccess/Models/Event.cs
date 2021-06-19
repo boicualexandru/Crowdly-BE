@@ -26,6 +26,8 @@ namespace DataAccess.Models
 
         public Guid CreatedByUserId { get; set; }
         public ApplicationUser CreatedByUser { get; set; }
+
+        public List<Ticket> Tickets { get; set; }
     }
 
     public enum EventCategoryType

@@ -12,5 +12,6 @@ namespace DataAccess.Models
 
         public List<Vendor> Vendors { get; set; }
         public List<SchedulePeriod> SchedulePeriodsBooked { get; set; }
+        public List<Ticket> Tickets { get; set; }
     }
 }
