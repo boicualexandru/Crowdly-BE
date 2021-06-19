@@ -12,7 +12,8 @@ namespace Services.Tickets.Mappers
     {
         public TicketProfile()
         {
-            CreateMap<DataAccess.Models.Ticket, Ticket>();
+            CreateMap<DataAccess.Models.Ticket, Ticket>()
+                .ForMember(dest => dest.EventName, opt => opt.MapFrom(src => src.Event.Name));
         }
     }
 }

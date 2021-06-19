@@ -11,5 +11,6 @@ namespace Services.Tickets.Models
         public Guid Id { get; set; }
         public Guid EventId { get; set; }
         public Guid UserId { get; set; }
+        public string EventName { get; set; }
     }
 }

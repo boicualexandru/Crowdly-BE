@@ -40,6 +40,7 @@ namespace Services.Tickets
         public async Task<Ticket[]> GetTicketsByEventIdAsync(Guid eventId)
         {
             var dbTickets = await _dbContext.Tickets
+                .Include(t => t.Event)
                 .Where(t => t.EventId == eventId)
                 .ToArrayAsync();
 
@@ -49,6 +50,7 @@ namespace Services.Tickets
         public async Task<Ticket[]> GetTicketsByUserIdAsync(Guid userId)
         {
             var dbTickets = await _dbContext.Tickets
+                .Include(t => t.Event)
                 .Where(t => t.UserId == userId)
                 .ToArrayAsync();
 
