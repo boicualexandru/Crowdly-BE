@@ -22,6 +22,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using Services.Events;
+using Services.Tickets;
 
 namespace Crowdly_BE
 {
@@ -111,6 +112,7 @@ namespace Crowdly_BE
             services.AddTransient<IVendorsService, VendorsService>();
             services.AddTransient<ISchedulePeriodsService, SchedulePeriodsService>();
             services.AddTransient<IEventsService, EventsService>();
+            services.AddTransient<ITicketsService, TicketsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
