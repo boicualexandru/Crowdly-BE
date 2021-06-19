@@ -6,10 +6,15 @@ using System.Threading.Tasks;
 
 namespace Crowdly_BE.Models.Tickets
 {
+    public class Ticket
+    {
+        public Guid Id { get; set; }
+        public Guid EventId { get; set; }
+        public Guid UserId { get; set; }
+    }
+
     public class ValidateTicketRequest
     {
-        [Required]
-        public Guid EventId { get; set; }
         [Required]
         public Guid TicketId { get; set; }
     }

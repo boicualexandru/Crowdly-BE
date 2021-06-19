@@ -1,17 +1,18 @@
 ﻿using AutoMapper;
+using Services.Tickets.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace Crowdly_BE.Models.Tickets
+namespace Services.Tickets.Mappers
 {
     public class TicketProfile : Profile
     {
         public TicketProfile()
         {
-            CreateMap<Services.Tickets.Models.ValidateTicketResponse, ValidateTicketResponse>();
-            CreateMap<Services.Tickets.Models.Ticket, Ticket>();
+            CreateMap<DataAccess.Models.Ticket, Ticket>();
         }
     }
 }

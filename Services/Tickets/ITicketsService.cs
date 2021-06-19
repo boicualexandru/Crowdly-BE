@@ -10,5 +10,8 @@ namespace Services.Tickets
     public interface ITicketsService
     {
         Task<ValidateTicketResponse> ValidateTicketAsync(Guid eventId, Guid ticketId);
+        Task<string[]> Book(Guid eventId, Guid userId);
+        Task<Ticket[]> GetTicketsByUserIdAsync(Guid userId);
+        Task<Ticket[]> GetTicketsByEventIdAsync(Guid eventId);
     }
 }
