@@ -11,7 +11,7 @@ namespace Crowdly_BE.Models.Events
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string City { get; set; }
+        public Guid CityId { get; set; }
         public double Price { get; set; }
         public string Thumbnail { get; set; }
         public EventCategoryType Category { get; set; }
@@ -21,7 +21,7 @@ namespace Crowdly_BE.Models.Events
 
     public class EventsFilters
     {
-        public string City { get; set; }
+        public Guid? CityId { get; set; }
         public EventCategoryType Category { get; set; }
         public double? PriceMin { get; set; }
         public double? PriceMax { get; set; }
@@ -33,7 +33,7 @@ namespace Crowdly_BE.Models.Events
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string City { get; set; }
+        public Guid CityId { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
         public DateTime StartDateTime { get; set; }
@@ -54,7 +54,7 @@ namespace Crowdly_BE.Models.Events
         [Required]
         public string Name { get; set; }
         [Required]
-        public string City { get; set; }
+        public Guid CityId { get; set; }
         [Required]
         public double Price { get; set; }
         public DateTime StartDateTime { get; set; }
@@ -74,7 +74,7 @@ namespace Crowdly_BE.Models.Events
         [Required]
         public string Name { get; set; }
         [Required]
-        public string City { get; set; }
+        public Guid CityId { get; set; }
         [Required]
         public double Price { get; set; }
         public DateTime StartDateTime { get; set; }

@@ -8,7 +8,7 @@ namespace Services.Events.Models
 {
     public class EventsFilters
     {
-        public string City { get; set; }
+        public Guid? CityId { get; set; }
         public EventCategoryType Category { get; set; }
         public double? PriceMin { get; set; }
         public double? PriceMax { get; set; }

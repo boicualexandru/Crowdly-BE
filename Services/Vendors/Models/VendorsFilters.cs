@@ -8,7 +8,7 @@ namespace Services.Vendors.Models
 {
     public class VendorsFilters
     {
-        public string City { get; set; }
+        public Guid? CityId { get; set; }
         public VendorCategoryType Category { get; set; }
         public double? PriceMin { get; set; }
         public double? PriceMax { get; set; }

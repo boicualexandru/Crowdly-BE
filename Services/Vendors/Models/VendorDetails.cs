@@ -6,7 +6,7 @@ namespace Services.Vendors.Models
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string City { get; set; }
+        public Guid CityId { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
         public string Phone { get; set; }

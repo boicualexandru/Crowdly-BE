@@ -3,15 +3,17 @@ using System;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210622203800_AddCityEntity")]
+    partial class AddCityEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,7 +180,7 @@ namespace DataAccess.Migrations
                     b.Property<string>("City")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("CityId")
+                    b.Property<Guid?>("CityId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CreatedByUserId")
@@ -301,7 +303,7 @@ namespace DataAccess.Migrations
                     b.Property<string>("City")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("CityId")
+                    b.Property<Guid?>("CityId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CreatedByUserId")
@@ -481,9 +483,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("DataAccess.Models.City", "CityRef")
                         .WithMany()
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CityId");
 
                     b.HasOne("DataAccess.Models.ApplicationUser", "CreatedByUser")
                         .WithMany()
@@ -536,9 +536,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("DataAccess.Models.City", "CityRef")
                         .WithMany()
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CityId");
 
                     b.HasOne("DataAccess.Models.ApplicationUser", "CreatedByUser")
                         .WithMany("Vendors")

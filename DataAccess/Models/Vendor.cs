@@ -8,6 +8,7 @@ namespace DataAccess.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string City { get; set; }
+        public Guid CityId { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
         public string Phone { get; set; }
@@ -24,6 +25,7 @@ namespace DataAccess.Models
         public ApplicationUser CreatedByUser { get; set; }
 
         public List<SchedulePeriod> SchedulePeriods { get; set; }
+        public City CityRef { get; set; }
     }
 
     public enum VendorCategoryType

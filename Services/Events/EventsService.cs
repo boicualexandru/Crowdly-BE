@@ -48,8 +48,8 @@ namespace Services.Events
         {
             var dbEventsQuery = _dbContext.Events.AsQueryable();
 
-            if (!String.IsNullOrWhiteSpace(filters.City))
-                dbEventsQuery = dbEventsQuery.Where(ev => ev.City == filters.City);
+            if (filters.CityId.HasValue)
+                dbEventsQuery = dbEventsQuery.Where(ev => ev.CityId == filters.CityId.Value);
 
             if (filters.Category != EventCategoryType.None)
             {

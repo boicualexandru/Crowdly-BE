@@ -37,8 +37,8 @@ namespace Services.Vendors
         {
             var dbVendorsQuery = _dbContext.Vendors.AsQueryable();
 
-            if (!String.IsNullOrWhiteSpace(filters.City))
-                dbVendorsQuery = dbVendorsQuery.Where(vendor => vendor.City == filters.City);
+            if (filters.CityId.HasValue)
+                dbVendorsQuery = dbVendorsQuery.Where(vendor => vendor.CityId == filters.CityId.Value);
 
             if (filters.Category != VendorCategoryType.None)
             {

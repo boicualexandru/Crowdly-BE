@@ -8,7 +8,7 @@ namespace Crowdly_BE.Models.Vendors
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string City { get; set; }
+        public Guid CityId { get; set; }
         public double Price { get; set; }
         public string Thumbnail { get; set; }
         public VendorCategoryType Category { get; set; }
@@ -16,7 +16,7 @@ namespace Crowdly_BE.Models.Vendors
 
     public class VendorsFilters
     {
-        public string City { get; set; }
+        public Guid? CityId { get; set; }
         public VendorCategoryType Category { get; set; }
         public double? PriceMin { get; set; }
         public double? PriceMax { get; set; }
@@ -30,7 +30,7 @@ namespace Crowdly_BE.Models.Vendors
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string City { get; set; }
+        public Guid CityId { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
         public string Phone { get; set; }
@@ -49,7 +49,7 @@ namespace Crowdly_BE.Models.Vendors
         [Required]
         public string Name { get; set; }
         [Required]
-        public string City { get; set; }
+        public Guid CityId { get; set; }
         [Required]
         public double Price { get; set; }
         public int? GuestsMin { get; set; }
@@ -67,7 +67,7 @@ namespace Crowdly_BE.Models.Vendors
         [Required]
         public string Name { get; set; }
         [Required]
-        public string City { get; set; }
+        public Guid CityId { get; set; }
         [Required]
         public double Price { get; set; }
         public int? GuestsMin { get; set; }
